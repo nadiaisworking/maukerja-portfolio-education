@@ -547,7 +547,8 @@ main {
     .folder-area {
         width: 260px;
         height: 180px;
-        margin-top: 15px;
+        margin-top: 40px;
+        /* Increased from 15px to lower the folder */
         transform: scale(0.8);
         transform-origin: top center;
     }
