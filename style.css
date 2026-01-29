@@ -499,7 +499,8 @@ main {
 
     /* Page 1: Game */
     .game-header-banner {
-        margin-top: 5px;
+        margin-top: 35px;
+        /* Pushes content below the phone's notch/island */
     }
 
     .banner-ribbon h1 {
