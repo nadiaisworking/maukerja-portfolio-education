@@ -514,7 +514,8 @@ main {
     }
 
     .bubbles-row {
-        margin-top: 15px;
+        margin-top: 40px;
+        /* 1cm gap with instructions */
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         /* 3 bubbles per row */
@@ -547,8 +548,8 @@ main {
     .folder-area {
         width: 260px;
         height: 180px;
-        margin-top: 40px;
-        /* Increased from 15px to lower the folder */
+        margin-top: 70px;
+        /* Lower position to align with desk/cup */
         transform: scale(0.8);
         transform-origin: top center;
     }
