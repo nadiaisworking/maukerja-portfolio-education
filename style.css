@@ -514,25 +514,34 @@ main {
     }
 
     .bubbles-row {
-        gap: 8px;
         margin-top: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 bubbles per row */
+        gap: 10px;
+        justify-items: center;
+        min-height: 180px;
+        /* Forces stable height so folder doesn't move */
+        width: 100%;
+        max-width: 320px;
     }
 
     .bubble-circle {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
     }
 
     .bubble-label {
-        font-size: 0.7rem;
-        padding: 2px 8px;
+        font-size: 0.75rem;
+        padding: 4px 10px;
     }
 
     .bubble-item {
-        width: 65px;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .folder-area {
