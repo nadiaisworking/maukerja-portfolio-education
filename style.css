@@ -493,99 +493,106 @@ main {
 
     /* Global Adjustments */
     .full-screen-view {
-        padding: 15px;
+        padding: 5px;
+        justify-content: flex-start;
     }
 
     /* Page 1: Game */
     .game-header-banner {
-        margin-top: 20px;
+        margin-top: 5px;
     }
 
     .banner-ribbon h1 {
-        font-size: 2rem;
-        -webkit-text-stroke: 3px var(--primary-red);
-    }
-
-    .banner-sub {
-        font-size: 1rem;
-        padding: 8px 20px;
-    }
-
-    .bubbles-row {
-        gap: 10px;
-        margin-top: 25px;
-        flex-wrap: wrap;
-    }
-
-    .bubble-circle {
-        width: 60px;
-        height: 60px;
-        font-size: 30px;
-    }
-
-    .bubble-label {
-        font-size: 0.8rem;
-        padding: 4px 10px;
-    }
-
-    .bubble-item {
-        width: 80px;
-    }
-
-    .folder-area {
-        width: 300px;
-        height: 220px;
-        margin-top: 30px;
-        transform: scale(0.9);
-    }
-
-    .folder-title {
-        font-size: 1.8rem;
-        top: 40px;
-    }
-
-    .mini-icon {
-        font-size: 1.8rem;
-    }
-
-    /* Page 2: Educational */
-    .content-title {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         -webkit-text-stroke: 2px var(--primary-red);
     }
 
+    .banner-sub {
+        font-size: 0.85rem;
+        padding: 4px 15px;
+    }
+
+    .bubbles-row {
+        gap: 8px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .bubble-circle {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .bubble-label {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+    }
+
+    .bubble-item {
+        width: 65px;
+    }
+
+    .folder-area {
+        width: 260px;
+        height: 180px;
+        margin-top: 15px;
+        transform: scale(0.8);
+        transform-origin: top center;
+    }
+
+    .folder-title {
+        font-size: 1.4rem;
+        top: 30px;
+    }
+
+    .mini-icon {
+        font-size: 1.4rem;
+    }
+
+    /* Page 2: Educational */
+    .content-container {
+        gap: 10px;
+    }
+
+    .content-title {
+        font-size: 1.5rem;
+        -webkit-text-stroke: 1.5px var(--primary-red);
+    }
+
     .educational-text p {
-        font-size: 1rem;
-        line-height: 1.4;
+        font-size: 0.9rem;
+        line-height: 1.3;
     }
 
     .portfolio-types-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 10px;
         max-width: 100%;
     }
 
     .type-card {
-        padding: 12px;
+        padding: 8px;
     }
 
     .type-title {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .type-desc {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 
     .cta-button {
-        font-size: 1.2rem;
-        padding: 12px 30px;
+        font-size: 1.1rem;
+        padding: 10px 25px;
     }
 
     /* Page 3: Form */
     .form-container-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 15px;
     }
 
     .form-left {
@@ -593,32 +600,32 @@ main {
     }
 
     .form-title {
-        font-size: 2rem;
+        font-size: 1.6rem;
         -webkit-text-stroke: 1.5px #BF360C;
     }
 
     .form-intro {
-        font-size: 1rem;
-        margin-bottom: 20px;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
     }
 
     .prize-badge {
-        font-size: 1.4rem;
-        padding: 15px 25px;
+        font-size: 1.2rem;
+        padding: 10px 20px;
     }
 
     .form-box {
-        padding: 20px;
-    }
-
-    .submit-button {
-        font-size: 1.2rem;
         padding: 15px;
     }
 
+    .submit-button {
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+
     .footer-logo-container {
-        width: 80px;
-        bottom: 10px;
-        right: 10px;
+        width: 60px;
+        bottom: 5px;
+        right: 5px;
     }
 }
