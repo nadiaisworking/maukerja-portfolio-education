@@ -1,0 +1,485 @@
+/* 
+================================================================
+   INI PORTFOLIO KE BUKAN? - MASTER STYLESHEET
+================================================================
+*/
+
+:root {
+    --primary-red: #ee3c4d;
+    --primary-yellow: #FFC107;
+    --folder-front: #FFCA28;
+    --folder-border: #FFA000;
+    --dark-red: #BF360C;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: #333;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* STATIC BACKGROUND */
+.fixed-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('assets/bg-office-game.png') no-repeat center center;
+    background-size: cover;
+    z-index: 0;
+}
+
+main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* VIEW MANAGEMENT */
+.full-screen-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, visibility 0.5s;
+    background: transparent;
+    overflow-y: auto;
+    z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    padding: 20px;
+}
+
+.full-screen-view.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) !important;
+}
+
+.full-screen-view.off-top {
+    transform: translateY(-100%) !important;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#game-view {
+    z-index: 10;
+    transform: translateY(0);
+    justify-content: flex-start;
+}
+
+#content-view {
+    z-index: 20;
+    transform: translateY(100%);
+    padding: 40px 20px;
+}
+
+#form-view {
+    z-index: 30;
+    transform: translateY(100%);
+    padding: 40px 20px;
+}
+
+/* 
+================================================================
+   PAGE 1: GAME (REWRITTEN FOR ROW ALIGNMENT)
+================================================================
+*/
+.game-header-banner {
+    margin-top: 40px;
+    text-align: center;
+    z-index: 20;
+}
+
+.banner-ribbon h1 {
+    font-family: 'Titan One', cursive;
+    font-size: 3.5rem;
+    color: #F2F2F2;
+    -webkit-text-stroke: 4px var(--primary-red);
+    paint-order: stroke fill;
+    text-shadow: 6px 6px 0 var(--dark-red);
+}
+
+.banner-sub {
+    display: inline-block;
+    background: var(--primary-red);
+    color: white;
+    padding: 10px 35px;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    border: 3px solid white;
+    margin-top: 15px;
+}
+
+/* Bubbles in a ROW */
+.bubbles-row {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    width: 100%;
+    z-index: 100;
+}
+
+.bubble-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: grab;
+    width: 100px;
+    animation: softFloat 3s ease-in-out infinite;
+}
+
+.bubble-item:active {
+    cursor: grabbing;
+    animation: none;
+}
+
+@keyframes softFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.bubble-circle {
+    width: 85px;
+    height: 85px;
+    background: white;
+    border: 4px solid #00BCD4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 6px 0 #0097A7, 0 10px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 12px;
+}
+
+.bubble-label {
+    background: #00BCD4;
+    color: white;
+    font-family: 'Titan One', cursive;
+    font-size: 1rem;
+    padding: 6px 18px;
+    border-radius: 12px;
+    border: 2px solid white;
+    box-shadow: 0 4px 0 #0097A7;
+    white-space: nowrap;
+}
+
+/* FOLDER WITH POCKET */
+.folder-area {
+    margin-top: 60px;
+    position: relative;
+    width: 420px;
+    height: 300px;
+}
+
+.folder-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-yellow);
+    border: 5px solid var(--folder-border);
+    border-radius: 15px;
+    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+/* Folder Tab */
+.folder-back::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 160px;
+    height: 40px;
+    background: var(--primary-yellow);
+    border: 5px solid var(--folder-border);
+    border-bottom: none;
+    border-radius: 15px 15px 0 0;
+}
+
+.folder-title {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Titan One', cursive;
+    color: #5D4037;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    opacity: 0.8;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* The Pocket Front */
+.folder-front {
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: 55%;
+    background: var(--folder-front);
+    border: 5px solid var(--folder-border);
+    border-radius: 0 0 15px 15px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Area where dropped items appear */
+.folder-pocket-content {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    height: 50%;
+    z-index: 5;
+    /* Between back and front */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.mini-icon {
+    font-size: 2.5rem;
+    margin: 5px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* 
+================================================================
+   PAGE 2: EDUCATIONAL
+================================================================
+*/
+.content-container {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.content-title {
+    font-family: 'Titan One', cursive;
+    font-size: 2.8rem;
+    color: #FFFFFF;
+    -webkit-text-stroke: 3px var(--primary-red);
+    paint-order: stroke fill;
+    text-shadow: 5px 5px 0 var(--dark-red);
+}
+
+.educational-text p {
+    color: white;
+    font-weight: 900;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 0, 0, 0.5);
+    max-width: 950px;
+}
+
+.portfolio-types-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    width: 100%;
+    max-width: 780px;
+}
+
+.type-card {
+    background: rgba(255, 255, 255, 0.98);
+    border: 4px solid #00BCD4;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.type-icon {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.type-title {
+    font-family: 'Titan One', cursive;
+    color: var(--primary-red);
+    font-size: 1.2rem;
+}
+
+.type-desc {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #333;
+}
+
+.cta-button {
+    background: #4CAF50;
+    color: white;
+    padding: 18px 45px;
+    font-size: 1.6rem;
+    border-radius: 50px;
+    font-family: 'Titan One', cursive;
+    cursor: pointer;
+    box-shadow: 0 7px 0 #2E7D32, 0 8px 15px rgba(0, 0, 0, 0.4);
+    margin-top: 15px;
+    border: 3px solid white;
+    animation: ctaDance 2s infinite ease-in-out;
+}
+
+@keyframes ctaDance {
+
+    0%,
+    100% {
+        transform: scale(1) translateY(0);
+    }
+
+    25% {
+        transform: scale(1.05) rotate(-2deg) translateY(-5px);
+    }
+
+    75% {
+        transform: scale(1.05) rotate(2deg) translateY(-5px);
+    }
+}
+
+/* 
+================================================================
+   PAGE 3: FORM (2-COLUMN)
+================================================================
+*/
+.form-container-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    width: 100%;
+    max-width: 1100px;
+    align-items: center;
+}
+
+.form-left {
+    text-align: left;
+}
+
+.form-title {
+    font-family: 'Titan One', cursive;
+    font-size: 3rem;
+    color: #FFFFFF;
+    -webkit-text-stroke: 8px var(--primary-red);
+    /* The "Red Wrap" outline */
+    paint-order: stroke fill;
+    text-shadow: 4px 4px 0 var(--dark-red);
+    /* Darker drop shadow for depth */
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.form-intro {
+    color: white;
+    font-weight: 900;
+    font-size: 1.3rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    margin-bottom: 25px;
+}
+
+.prize-badge {
+    background: linear-gradient(135deg, #1E88E5 0%, #42A5F5 100%);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 20px;
+    font-family: 'Titan One', cursive;
+    font-size: 1.8rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    display: inline-block;
+    border: 3px solid white;
+}
+
+.form-right {
+    width: 100%;
+}
+
+.form-box {
+    background: white;
+    border-radius: 25px;
+    padding: 35px;
+    border: 5px solid var(--primary-red);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 3px solid #00BCD4;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
+
+.submit-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 18px;
+    font-size: 1.5rem;
+    border-radius: 50px;
+    font-family: 'Titan One', cursive;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #2E7D32;
+}
+
+/* FOOTER LOGO */
+.footer-logo-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 120px;
+}
+
+.footer-logo {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}

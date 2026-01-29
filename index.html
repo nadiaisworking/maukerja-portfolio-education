@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ini Portfolio Ke Bukan?</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <!-- Consolidated Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- STATIC BACKGROUND -->
+    <div class="fixed-background"></div>
+
+    <main>
+        <!-- VIEW 1: GAME PAGE -->
+        <section id="game-view" class="full-screen-view active">
+            <header class="game-header-banner">
+                <div class="banner-ribbon">
+                    <h1>Ini Portfolio Ke Bukan?</h1>
+                </div>
+                <div class="banner-sub">Drag file dalam folder Portfolio!</div>
+            </header>
+
+            <div id="bubbles-container" class="bubbles-row">
+                <!-- Bubbles injected by JS in a ROW -->
+            </div>
+
+            <!-- FOLDER WITH POCKET -->
+            <div class="folder-area" id="drop-zone">
+                <div class="folder-back">
+                    <div class="folder-title">Portfolio</div>
+                    <div id="pocket-content" class="folder-pocket-content">
+                        <!-- Dropped icons appear here -->
+                    </div>
+                </div>
+                <div class="folder-front"></div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: EDUCATIONAL CONTENT -->
+        <section id="content-view" class="full-screen-view">
+            <div class="content-container">
+                <h2 class="content-title">Semua Benda Boleh Jadi Portfolio!</h2>
+
+                <div class="educational-text">
+                    <p>
+                        Portfolio tak semestinya kena cantik atau perfect.<br>
+                        Apa sahaja yang korang pernah buat dan boleh buktikan usaha & hasil kerja,<br>
+                        korang boleh guna tu dalam portfolio!
+                    </p>
+                </div>
+
+                <div class="portfolio-types-grid">
+                    <div class="type-card">
+                        <div class="type-icon">📸</div>
+                        <h3 class="type-title">Gambar</h3>
+                        <p class="type-desc">Poster, design & fotografi</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🎥</div>
+                        <h3 class="type-title">Video</h3>
+                        <p class="type-desc">Content, presentation & demo kerja</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🌐</div>
+                        <h3 class="type-title">Website</h3>
+                        <p class="type-desc">Blog, landing page, sistem & portfolio site</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">📄</div>
+                        <h3 class="type-title">Dokumen</h3>
+                        <p class="type-desc">Laporan, slide, proposal & assignment</p>
+                    </div>
+                </div>
+
+                <button class="cta-button" id="cta-hadiah">💰 Nak Menang Hadiah 💰</button>
+            </div>
+        </section>
+
+        <!-- VIEW 3: FORM SUBMISSION -->
+        <section id="form-view" class="full-screen-view">
+            <div class="form-container-grid">
+                <div class="form-left">
+                    <h2 class="form-title">Hantar Portfolio & Menang!</h2>
+                    <p class="form-intro">Hantar portfolio korang sekarang untuk peluang memenangi hadiah Touch n Go
+                        eWallet!</p>
+                    <div class="prize-badge">💰 RM50 Touch n Go 💰</div>
+                </div>
+
+                <div class="form-right">
+                    <div class="form-box">
+                        <form id="portfolio-form">
+                            <div class="form-group">
+                                <label>Nama Penuh</label>
+                                <input type="text" name="nama" required placeholder="Nama penuh anda">
+                            </div>
+                            <div class="form-group">
+                                <label>Nombor Whatsapp</label>
+                                <input type="tel" name="whatsapp" required placeholder="+60123456789"
+                                    pattern="\+60[0-9]{9,10}">
+                            </div>
+                            <div class="form-group">
+                                <label>Muat Naik Portfolio</label>
+                                <input type="file" name="file" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Penerangan Ringkas Portfolio</label>
+                                <textarea name="penerangan" required placeholder="Ceritakan tentang portfolio anda..."
+                                    rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="submit-button">Hantar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="footer-logo-container">
+        <img src="assets/logo.png" alt="Maukerja" class="footer-logo">
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
