@@ -200,6 +200,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (imageSpecificFields) imageSpecificFields.style.display = 'none';
                     }
 
+                    // Display Preview
+                    const imagePreview = document.getElementById('image-preview');
+                    if (imagePreview) {
+                        imagePreview.style.display = 'none';
+                        imagePreview.src = '';
+
+                        if (category === 'Imej' && file.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                imagePreview.src = e.target.result;
+                                imagePreview.style.display = 'block';
+                            }
+                            reader.readAsDataURL(file);
+                        }
+                    }
+
                     if (fileNameDisplay) {
                         fileNameDisplay.innerText = fileName;
                         fileNameDisplay.style.color = '#333';
