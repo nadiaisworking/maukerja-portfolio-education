@@ -550,11 +550,11 @@ main {
     .bubbles-row {
         margin-top: 40px;
         /* 1cm gap with instructions */
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        /* 3 bubbles per row */
-        gap: 10px;
-        justify-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        /* Increased slightly for better spacing */
         min-height: 180px;
         /* Forces stable height so folder doesn't move */
         width: 100%;
