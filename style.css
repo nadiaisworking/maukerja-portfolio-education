@@ -801,6 +801,142 @@ main {
 }
 
 .folder-red .folder-body {
+    background: linear-gradient(180deg, #ef5350 0%, #d32f2f 100%);
+}
+
+/* Green - Website */
+.folder-green .folder-tab,
+.folder-green .folder-body {
+    background: #4CAF50;
+}
+
+.folder-green .folder-body {
+    background: linear-gradient(180deg, #66BB6A 0%, #388E3C 100%);
+}
+
+/* Yellow - Dokumen */
+.folder-yellow .folder-tab,
+.folder-yellow .folder-body {
+    background: #FFC107;
+}
+
+.folder-yellow .folder-body {
+    background: linear-gradient(180deg, #FFCA28 0%, #FFA000 100%);
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.folder-yellow .folder-text {
+    color: #5D4037;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+    -webkit-text-stroke: 0;
+}
+
+
+/* 
+================================================================
+   WHATSAPP MODAL
+================================================================
+*/
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    border: 5px solid var(--primary-red);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-title {
+    font-family: 'Titan One', cursive;
+    color: var(--primary-red);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.modal-text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.modal-subtext {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.whatsapp-btn {
+    display: block;
+    width: 100%;
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 50px;
+    font-family: 'Titan One', cursive;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 0 #128C7E, 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s;
+    border: 3px solid white;
+}
+
+.whatsapp-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #128C7E;
+}
+
+.close-modal-btn {
+    background: transparent;
+    border: none;
+    color: #999;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 10px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.close-modal-btn:hover {
+    color: #333;
+}
+
+.folder-red .folder-body {
     background: linear-gradient(180deg, #EF5350 0%, #D32F2F 100%);
 }
 

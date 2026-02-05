@@ -130,7 +130,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('portfolio-form')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        alert('Terima kasih! Perkongsian anda telah direkodkan.');
+
+        // Show WhatsApp Modal
+        const modal = document.getElementById('whatsapp-modal');
+        if (modal) modal.classList.add('active');
+    });
+
+    // Close Modal Logic
+    document.getElementById('close-modal-btn')?.addEventListener('click', () => {
+        document.getElementById('whatsapp-modal')?.classList.remove('active');
+    });
+
+    // Optional: Close on outside click
+    document.getElementById('whatsapp-modal')?.addEventListener('click', (e) => {
+        if (e.target.id === 'whatsapp-modal') {
+            e.target.classList.remove('active');
+        }
     });
 
     // NEW: Handle Folder Click & File Upload
