@@ -156,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const submissionArea = document.getElementById('submission-area');
         const videoSpecificFields = document.getElementById('video-specific-fields');
         const imageSpecificFields = document.getElementById('image-specific-fields');
+        const websiteSpecificFields = document.getElementById('website-specific-fields');
         const fileUploadSection = document.getElementById('file-name-display')?.parentElement; // The div with "Fail Dipilih"
 
         if (categoryInput) {
@@ -165,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (submissionArea) submissionArea.style.display = 'none';
             if (videoSpecificFields) videoSpecificFields.style.display = 'none';
             if (imageSpecificFields) imageSpecificFields.style.display = 'none';
+            if (websiteSpecificFields) websiteSpecificFields.style.display = 'none';
             if (fileUploadSection) fileUploadSection.style.display = 'flex'; // Reset to show file picker by default
 
             // Default: File is required
@@ -176,6 +178,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (videoSpecificFields) videoSpecificFields.style.display = 'block';
 
                 // Video: File NOT required, Link REQUIRED
+                if (fileInput) fileInput.required = false;
+
+                if (submissionArea) {
+                    submissionArea.style.display = 'block';
+                    setTimeout(() => {
+                        submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+                return; // Stop here, don't open file picker
+            }
+
+            // WEBSITE FLOW (No File Upload)
+            if (category === 'Website') {
+                if (fileUploadSection) fileUploadSection.style.display = 'none'; // Hide file picker
+                if (websiteSpecificFields) websiteSpecificFields.style.display = 'block';
+
+                // Website: File NOT required, Link REQUIRED
                 if (fileInput) fileInput.required = false;
 
                 if (submissionArea) {

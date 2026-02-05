@@ -183,9 +183,28 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="submit-button">Hantar Penyertaan</button>
-                    </form>
                 </div>
+
+                <!-- Website Specific Fields (Hidden by default) -->
+                <div id="website-specific-fields" style="display: none;">
+                    <div class="form-group">
+                        <label>Link Website</label>
+                        <input type="url" name="website_link" placeholder="https://www.example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Tajuk Website / Projek</label>
+                        <input type="text" name="website_title" placeholder="Nama website atau projek...">
+                    </div>
+                    <div class="form-group">
+                        <label>Keterangan Pendek</label>
+                        <textarea name="website_desc" rows="3"
+                            placeholder="Ceritakan sedikit mengenai website ini..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button">Hantar Penyertaan</button>
+                </form>
+            </div>
             </div>
         </section>
     </main>
