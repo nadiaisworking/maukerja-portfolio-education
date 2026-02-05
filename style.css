@@ -573,7 +573,8 @@ main {
     }
 
     .bubble-item {
-        width: auto;
+        width: 29%;
+        /* Forces 3 items per row (29*3 + gaps < 100%) */
         display: flex;
         flex-direction: column;
         align-items: center;
