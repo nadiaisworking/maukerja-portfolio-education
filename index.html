@@ -129,9 +129,28 @@
                         <input type="hidden" id="selected-category" name="category">
                         <div class="form-group">
                             <label>Fail Dipilih:</label>
-                            <div id="file-name-display" style="font-weight: bold; margin-bottom: 10px; color: #333;">
-                                Tiada file dipilih</div>
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
+                                <div id="file-name-display"
+                                    style="font-weight: bold; color: #333; flex-grow: 1; word-break: break-all;">
+                                    Tiada file dipilih</div>
+                                <button type="button" id="change-file-btn"
+                                    style="display:none; background: #ddd; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-family: 'Nunito'; font-weight: bold; font-size: 0.8rem;">Tukar</button>
+                            </div>
                             <input type="file" id="hidden-file-input" name="file" required style="display: none;">
+                        </div>
+
+                        <!-- Image Specific Fields (Hidden by default) -->
+                        <div id="image-specific-fields" style="display: none;">
+                            <div class="form-group">
+                                <label>Tajuk Gambar</label>
+                                <input type="text" name="image_title" placeholder="Tajuk pendek gambar...">
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan Pendek</label>
+                                <textarea name="image_desc" rows="3"
+                                    placeholder="Ceritakan sedikit mengenai gambar ini..."></textarea>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Nama Penuh</label>
