@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let isDragging = false;
         let startX, startY;
         let originalParent = el.parentElement;
+        let placeholder = null; // To hold the space
 
         el.addEventListener('mousedown', start);
         el.addEventListener('touchstart', start, { passive: false });
@@ -46,6 +47,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const rect = el.getBoundingClientRect();
             startX = pos.clientX - rect.left;
             startY = pos.clientY - rect.top;
+
+            // Create placeholder
+            placeholder = document.createElement('div');
+            placeholder.style.width = `${rect.width}px`;
+            placeholder.style.height = `${rect.height}px`;
+            placeholder.style.flex = '0 0 auto'; // Prevent flex shrinking
+            placeholder.style.pointerEvents = 'none'; // Don't interfere
+            // Copy margins if necessary, though simple flex gap might handle it. 
+            // Computed style check is safer.
+            const style = window.getComputedStyle(el);
+            placeholder.style.margin = style.margin;
+            placeholder.style.visibility = 'hidden'; // invisible
+
+            // Insert placeholder before setting fixed
+            el.parentElement.insertBefore(placeholder, el);
 
             el.style.width = `${rect.width}px`;
             el.style.position = 'fixed';
@@ -74,6 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.removeEventListener('touchmove', move);
             document.removeEventListener('mouseup', stop);
             document.removeEventListener('touchend', stop);
+
+            // Remove placeholder
+            if (placeholder && placeholder.parentElement) {
+                placeholder.remove();
+                placeholder = null;
+            }
 
             const rectEl = el.getBoundingClientRect();
             const rectTarget = dropZone.getBoundingClientRect();
