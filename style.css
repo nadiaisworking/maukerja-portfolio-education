@@ -659,8 +659,8 @@ main {
 .cta-title {
     font-family: 'Titan One', cursive;
     font-size: 3rem;
-    color: #FFFFFF;
-    -webkit-text-stroke: 6px var(--primary-red);
+    color: var(--primary-red);
+    -webkit-text-stroke: 6px #FFFFFF;
     paint-order: stroke fill;
     text-shadow: 4px 4px 0 var(--dark-red);
     margin-bottom: 10px;
