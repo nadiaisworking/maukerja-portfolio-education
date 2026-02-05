@@ -157,7 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoSpecificFields = document.getElementById('video-specific-fields');
         const imageSpecificFields = document.getElementById('image-specific-fields');
         const websiteSpecificFields = document.getElementById('website-specific-fields');
-        const fileUploadSection = document.getElementById('file-name-display')?.parentElement; // The div with "Fail Dipilih"
+        // Fix: Target the specific form-group for the file input
+        const fileInputGroup = document.getElementById('hidden-file-input')?.closest('.form-group');
 
         if (categoryInput) {
             categoryInput.value = category;
@@ -167,14 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (videoSpecificFields) videoSpecificFields.style.display = 'none';
             if (imageSpecificFields) imageSpecificFields.style.display = 'none';
             if (websiteSpecificFields) websiteSpecificFields.style.display = 'none';
-            if (fileUploadSection) fileUploadSection.style.display = 'flex'; // Reset to show file picker by default
+            if (fileInputGroup) fileInputGroup.style.display = 'block'; // Reset to show file picker by default
 
             // Default: File is required
             if (fileInput) fileInput.required = true;
 
             // VIDEO FLOW (No File Upload)
             if (category === 'Video') {
-                if (fileUploadSection) fileUploadSection.style.display = 'none'; // Hide file picker
+                if (fileInputGroup) fileInputGroup.style.display = 'none'; // Hide file picker group
                 if (videoSpecificFields) videoSpecificFields.style.display = 'block';
 
                 // Video: File NOT required, Link REQUIRED
@@ -191,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // website/PROJEK FLOW (No File Upload)
             if (category === 'Projek') {
-                if (fileUploadSection) fileUploadSection.style.display = 'none'; // Hide file picker
+                if (fileInputGroup) fileInputGroup.style.display = 'none'; // Hide file picker group
                 if (websiteSpecificFields) websiteSpecificFields.style.display = 'block';
 
                 // Website: File NOT required, Link REQUIRED
