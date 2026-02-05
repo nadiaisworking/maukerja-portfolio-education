@@ -479,7 +479,22 @@ main {
     border-radius: 50px;
     font-family: 'Titan One', cursive;
     cursor: pointer;
+    padding: 18px;
+    font-size: 1.5rem;
+    border-radius: 50px;
+    font-family: 'Titan One', cursive;
+    cursor: pointer;
     box-shadow: 0 6px 0 #2E7D32;
+    transition: transform 0.1s;
+}
+
+.submit-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #2E7D32;
+}
+
+#change-file-btn:hover {
+    background: #ccc !important;
 }
 
 /* FOOTER LOGO */

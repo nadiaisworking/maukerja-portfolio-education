@@ -140,6 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (categoryInput && fileInput) {
             categoryInput.value = category;
+
+            // Set specific accept types for Image
+            if (category === 'Imej') {
+                fileInput.accept = '.jpg, .jpeg, .png';
+            } else {
+                fileInput.removeAttribute('accept'); // Reset for other types
+            }
+
             fileInput.click();
         }
     };
@@ -150,24 +158,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileNameDisplay = document.getElementById('file-name-display');
 
     if (hiddenFileInput) {
-        hiddenFileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                const fileName = e.target.files[0].name;
-                const category = document.getElementById('selected-category').value;
+        const changeFileBtn = document.getElementById('change-file-btn');
+        const imageSpecificFields = document.getElementById('image-specific-fields');
 
-                if (fileNameDisplay) {
-                    fileNameDisplay.innerText = `File: ${fileName} (${category})`;
-                    fileNameDisplay.style.color = '#4CAF50';
-                }
+        // Change File Button Logic
+        if (changeFileBtn) {
+            changeFileBtn.addEventListener('click', () => {
+                hiddenFileInput.click();
+            });
+        }
 
-                if (submissionArea) {
-                    submissionArea.style.display = 'block';
-                    // Small delay to ensure display is rendered before scrolling
-                    setTimeout(() => {
-                        submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
+        if (hiddenFileInput) {
+            hiddenFileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const fileName = file.name;
+                    const fileSize = file.size; // in bytes
+                    const category = document.getElementById('selected-category').value;
+
+                    // VALIDATION FOR IMAGE
+                    if (category === 'Imej') {
+                        // Check Size (Max 2MB)
+                        if (fileSize > 2 * 1024 * 1024) {
+                            alert('Maaf, saiz file gambar mestilah kurang daripada 2MB.');
+                            hiddenFileInput.value = ''; // Clear input
+                            return;
+                        }
+
+                        // Check Type
+                        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                        if (!validTypes.includes(file.type)) {
+                            alert('Hanya format JPG dan PNG dibenarkan untuk Gambar.');
+                            hiddenFileInput.value = ''; // Clear input
+                            return;
+                        }
+
+                        // Show Image Fields
+                        if (imageSpecificFields) imageSpecificFields.style.display = 'block';
+                    } else {
+                        // Hide Image Fields for others
+                        if (imageSpecificFields) imageSpecificFields.style.display = 'none';
+                    }
+
+                    if (fileNameDisplay) {
+                        fileNameDisplay.innerText = fileName;
+                        fileNameDisplay.style.color = '#333';
+                    }
+
+                    if (changeFileBtn) changeFileBtn.style.display = 'block';
+
+                    if (submissionArea) {
+                        submissionArea.style.display = 'block';
+                        // Small delay to ensure display is rendered before scrolling
+                        setTimeout(() => {
+                            submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 });
