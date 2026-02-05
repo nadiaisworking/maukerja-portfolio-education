@@ -149,23 +149,72 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // NEW: Handle Folder Click & File Upload
+    // NEW: Handle Folder Click & File Upload
     window.triggerUpload = function (category) {
         const categoryInput = document.getElementById('selected-category');
         const fileInput = document.getElementById('hidden-file-input');
+        const submissionArea = document.getElementById('submission-area');
+        const videoSpecificFields = document.getElementById('video-specific-fields');
+        const imageSpecificFields = document.getElementById('image-specific-fields');
+        const fileUploadSection = document.getElementById('file-name-display')?.parentElement; // The div with "Fail Dipilih"
 
-        if (categoryInput && fileInput) {
+        if (categoryInput) {
             categoryInput.value = category;
 
-            // Set specific accept types for Image
-            if (category === 'Imej') {
-                fileInput.accept = '.jpg, .jpeg, .png';
-            } else {
-                fileInput.removeAttribute('accept'); // Reset for other types
+            // RESET UI
+            if (submissionArea) submissionArea.style.display = 'none';
+            if (videoSpecificFields) videoSpecificFields.style.display = 'none';
+            if (imageSpecificFields) imageSpecificFields.style.display = 'none';
+            if (fileUploadSection) fileUploadSection.style.display = 'flex'; // Reset to show file picker by default
+
+            // VIDEO FLOW (No File Upload)
+            if (category === 'Video') {
+                if (fileUploadSection) fileUploadSection.style.display = 'none'; // Hide file picker
+                if (videoSpecificFields) videoSpecificFields.style.display = 'block';
+                if (submissionArea) {
+                    submissionArea.style.display = 'block';
+                    setTimeout(() => {
+                        submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+                return; // Stop here, don't open file picker
             }
 
-            fileInput.click();
+            // FILE UPLOAD FLOWS
+            if (fileInput) {
+                // Set specific accept types for Image
+                if (category === 'Imej') {
+                    fileInput.accept = '.jpg, .jpeg, .png';
+                } else {
+                    fileInput.removeAttribute('accept'); // Reset for other types
+                }
+                fileInput.click();
+            }
         }
     };
+
+    // YOUTUBE PREVIEW LOGIC
+    const youtubeInput = document.getElementById('youtube-link-input');
+    const videoPreviewContainer = document.getElementById('video-preview-container');
+    const videoPreviewFrame = document.getElementById('video-preview-frame');
+
+    if (youtubeInput && videoPreviewFrame) {
+        youtubeInput.addEventListener('input', (e) => {
+            const url = e.target.value;
+            // Regex to extract video ID (supports standard v= and short youtu.be/)
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+
+            if (match && match[2].length === 11) {
+                const videoId = match[2];
+                videoPreviewFrame.src = `https://www.youtube.com/embed/${videoId}`;
+                if (videoPreviewContainer) videoPreviewContainer.style.display = 'block';
+            } else {
+                if (videoPreviewContainer) videoPreviewContainer.style.display = 'none';
+                videoPreviewFrame.src = '';
+            }
+        });
+    }
 
     // NEW: Show Form after File Selection
     const hiddenFileInput = document.getElementById('hidden-file-input');

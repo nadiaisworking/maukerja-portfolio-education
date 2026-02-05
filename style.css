@@ -139,6 +139,11 @@ main {
     margin-top: 15px;
 }
 
+#video-preview-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
 /* Bubbles in a ROW */
 .bubbles-row {
     margin-top: 40px;

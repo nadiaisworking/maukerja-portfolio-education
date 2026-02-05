@@ -157,6 +157,32 @@
                             </div>
                         </div>
 
+                        <!-- Video Specific Fields (Hidden by default) -->
+                        <div id="video-specific-fields" style="display: none;">
+                            <div class="form-group" style="text-align: center;">
+                                <div id="video-preview-container"
+                                    style="display: none; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; margin-bottom: 10px; border: 2px solid #ddd; overflow: hidden;">
+                                    <iframe id="video-preview-frame" width="100%" height="100%" src="" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Link Youtube</label>
+                                <input type="url" name="youtube_link" id="youtube-link-input"
+                                    placeholder="https://www.youtube.com/watch?v=...">
+                            </div>
+                            <div class="form-group">
+                                <label>Tajuk Video</label>
+                                <input type="text" name="video_title" placeholder="Tajuk video anda...">
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan Pendek</label>
+                                <textarea name="video_desc" rows="3"
+                                    placeholder="Ceritakan sedikit mengenai video ini..."></textarea>
+                            </div>
+                        </div>
+
                         <button type="submit" class="submit-button">Hantar Penyertaan</button>
                     </form>
                 </div>
