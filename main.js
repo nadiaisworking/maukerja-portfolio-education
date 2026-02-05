@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hiddenFileInput) {
         const changeFileBtn = document.getElementById('change-file-btn');
-        const changeFileBtn = document.getElementById('change-file-btn');
+
         const imageSpecificFields = document.getElementById('image-specific-fields');
         const documentSpecificFields = document.getElementById('document-specific-fields');
 
