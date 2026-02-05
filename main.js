@@ -7,9 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pocketContent = document.getElementById('pocket-content');
 
     let collectedCount = 0;
-    const totalItems = 6;
+    const totalItems = 5;
     const items = [
-        { icon: '📝', label: 'Resume' },
         { icon: '📜', label: 'Sijil' },
         { icon: '🚀', label: 'Projek' },
         { icon: '📰', label: 'Artikel' },
