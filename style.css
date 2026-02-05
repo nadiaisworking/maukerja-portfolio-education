@@ -34,7 +34,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('bg-office-game.png') no-repeat center center;
+    background: url('assets/bg-office-game.png') no-repeat center center;
     background-size: cover;
     z-index: 0;
 }
@@ -639,5 +639,182 @@ main {
         width: 60px;
         bottom: 5px;
         right: 5px;
+    }
+}
+
+/* 
+================================================================
+   PAGE 3: UPLOAD CTA (NEW)
+================================================================
+*/
+.upload-cta-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.cta-title {
+    font-family: 'Titan One', cursive;
+    font-size: 3rem;
+    color: #FFFFFF;
+    -webkit-text-stroke: 6px var(--primary-red);
+    paint-order: stroke fill;
+    text-shadow: 4px 4px 0 var(--dark-red);
+    margin-bottom: 10px;
+}
+
+.cta-subtitle {
+    color: white;
+    font-weight: 900;
+    font-size: 1.4rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    margin-bottom: 40px;
+}
+
+.cta-instruction {
+    color: white;
+    font-weight: 900;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+/* FOLDER GRID */
+.folder-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* MAC FOLDER BUTTON STYLES */
+.mac-folder {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    width: 140px;
+    height: 110px;
+    transition: transform 0.2s ease;
+}
+
+.mac-folder:hover {
+    transform: translateY(-10px);
+}
+
+.folder-tab {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 15px;
+    border-radius: 8px 8px 0 0;
+    z-index: 1;
+}
+
+.folder-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    border-radius: 0 8px 8px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    z-index: 2;
+}
+
+.folder-text {
+    font-family: 'Titan One', cursive;
+    color: white;
+    font-size: 1.2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Folder Color Variants */
+/* Blue - Image */
+.folder-blue .folder-tab,
+.folder-blue .folder-body {
+    background: #2196F3;
+}
+
+.folder-blue .folder-body {
+    background: linear-gradient(180deg, #42A5F5 0%, #1E88E5 100%);
+}
+
+/* Red - Video */
+.folder-red .folder-tab,
+.folder-red .folder-body {
+    background: #F44336;
+}
+
+.folder-red .folder-body {
+    background: linear-gradient(180deg, #EF5350 0%, #D32F2F 100%);
+}
+
+/* Green - Website */
+.folder-green .folder-tab,
+.folder-green .folder-body {
+    background: #4CAF50;
+}
+
+.folder-green .folder-body {
+    background: linear-gradient(180deg, #66BB6A 0%, #388E3C 100%);
+}
+
+/* Yellow - Document */
+.folder-yellow .folder-tab,
+.folder-yellow .folder-body {
+    background: #FFC107;
+}
+
+.folder-yellow .folder-body {
+    background: linear-gradient(180deg, #FFCA28 0%, #FFA000 100%);
+}
+
+/* Mobile Adjustments for Folders */
+@media (max-width: 600px) {
+    .cta-title {
+        font-size: 1.8rem;
+        -webkit-text-stroke: 3px var(--primary-red);
+    }
+
+    .cta-subtitle {
+        font-size: 1rem;
+    }
+
+    .folder-grid {
+        gap: 15px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mac-folder {
+        width: 120px;
+        height: 95px;
+        margin: 0 auto;
+    }
+
+    .folder-tab {
+        width: 50px;
+        height: 12px;
+    }
+
+    .folder-body {
+        height: 85px;
+    }
+
+    .folder-text {
+        font-size: 1rem;
     }
 }

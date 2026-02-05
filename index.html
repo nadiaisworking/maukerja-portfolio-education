@@ -85,40 +85,60 @@
 
         <!-- VIEW 3: FORM SUBMISSION -->
         <section id="form-view" class="full-screen-view">
-            <div class="form-container-grid">
-                <div class="form-left">
-                    <h2 class="form-title">Hantar Portfolio & Menang!</h2>
-                    <p class="form-intro">Hantar portfolio korang sekarang untuk peluang memenangi hadiah Touch n Go
-                        eWallet!</p>
-                    <div class="prize-badge">💰 RM50 Touch n Go 💰</div>
-                </div>
-
-                <div class="form-right">
-                    <div class="form-box">
-                        <form id="portfolio-form">
-                            <div class="form-group">
-                                <label>Nama Penuh</label>
-                                <input type="text" name="nama" required placeholder="Nama penuh anda">
-                            </div>
-                            <div class="form-group">
-                                <label>Nombor Whatsapp</label>
-                                <input type="tel" name="whatsapp" required placeholder="+60123456789"
-                                    pattern="\+60[0-9]{9,10}">
-                            </div>
-                            <div class="form-group">
-                                <label>Muat Naik Portfolio</label>
-                                <input type="file" name="file" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Penerangan Ringkas Portfolio</label>
-                                <textarea name="penerangan" required placeholder="Ceritakan tentang portfolio anda..."
-                                    rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="submit-button">Hantar</button>
-                        </form>
+        <div class="upload-cta-container">
+            <h2 class="cta-title">Jom Upload Hasil Kerja Korang!</h2>
+            <p class="cta-subtitle">Hanya perlu hantar 1 file & korang berpeluang menang RM30x5!</p>
+            
+            <div class="folder-grid">
+                <button type="button" class="mac-folder folder-blue" onclick="triggerUpload('Imej')">
+                    <div class="folder-tab"></div>
+                    <div class="folder-body">
+                        <span class="folder-text">Imej</span>
                     </div>
-                </div>
+                </button>
+                <button type="button" class="mac-folder folder-red" onclick="triggerUpload('Video')">
+                    <div class="folder-tab"></div>
+                    <div class="folder-body">
+                        <span class="folder-text">Video</span>
+                    </div>
+                </button>
+                <button type="button" class="mac-folder folder-green" onclick="triggerUpload('Website')">
+                    <div class="folder-tab"></div>
+                    <div class="folder-body">
+                        <span class="folder-text">Website</span>
+                    </div>
+                </button>
+                <button type="button" class="mac-folder folder-yellow" onclick="triggerUpload('Dokumen')">
+                    <div class="folder-tab"></div>
+                    <div class="folder-body">
+                        <span class="folder-text">Dokumen</span>
+                    </div>
+                </button>
             </div>
+
+            <p class="cta-instruction">Sila klik 1 file untuk dihantar</p>
+
+            <!-- Hidden/Simplified Form for Logic -->
+            <div id="submission-area" style="display: none; margin-top: 20px; width: 100%; max-width: 400px; background: rgba(255,255,255,0.9); padding: 20px; border-radius: 15px; border: 3px solid #ee3c4d;">
+                <form id="portfolio-form">
+                    <input type="hidden" id="selected-category" name="category">
+                    <div class="form-group">
+                        <label>Fail Dipilih:</label>
+                        <div id="file-name-display" style="font-weight: bold; margin-bottom: 10px; color: #333;">Tiada file dipilih</div>
+                        <input type="file" id="hidden-file-input" name="file" required style="display: none;">
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Penuh</label>
+                        <input type="text" name="nama" required placeholder="Nama penuh anda">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombor Whatsapp</label>
+                        <input type="tel" name="whatsapp" required placeholder="+60123456789">
+                    </div>
+                    <button type="submit" class="submit-button">Hantar Penyertaan</button>
+                </form>
+            </div>
+        </div>
         </section>
     </main>
 

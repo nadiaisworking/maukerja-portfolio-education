@@ -132,4 +132,42 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         alert('Terima kasih! Perkongsian anda telah direkodkan.');
     });
+
+    // NEW: Handle Folder Click & File Upload
+    window.triggerUpload = function (category) {
+        const categoryInput = document.getElementById('selected-category');
+        const fileInput = document.getElementById('hidden-file-input');
+
+        if (categoryInput && fileInput) {
+            categoryInput.value = category;
+            fileInput.click();
+        }
+    };
+
+    // NEW: Show Form after File Selection
+    const hiddenFileInput = document.getElementById('hidden-file-input');
+    const submissionArea = document.getElementById('submission-area');
+    const fileNameDisplay = document.getElementById('file-name-display');
+
+    if (hiddenFileInput) {
+        hiddenFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const fileName = e.target.files[0].name;
+                const category = document.getElementById('selected-category').value;
+
+                if (fileNameDisplay) {
+                    fileNameDisplay.innerText = `File: ${fileName} (${category})`;
+                    fileNameDisplay.style.color = '#4CAF50';
+                }
+
+                if (submissionArea) {
+                    submissionArea.style.display = 'block';
+                    // Small delay to ensure display is rendered before scrolling
+                    setTimeout(() => {
+                        submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            }
+        });
+    }
 });
