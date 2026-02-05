@@ -189,8 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return; // Stop here, don't open file picker
             }
 
-            // WEBSITE FLOW (No File Upload)
-            if (category === 'Website') {
+            // website/PROJEK FLOW (No File Upload)
+            if (category === 'Projek') {
                 if (fileUploadSection) fileUploadSection.style.display = 'none'; // Hide file picker
                 if (websiteSpecificFields) websiteSpecificFields.style.display = 'block';
 
