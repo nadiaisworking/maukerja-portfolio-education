@@ -157,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoSpecificFields = document.getElementById('video-specific-fields');
         const imageSpecificFields = document.getElementById('image-specific-fields');
         const websiteSpecificFields = document.getElementById('website-specific-fields');
+        const documentSpecificFields = document.getElementById('document-specific-fields');
         // Fix: Target the specific form-group for the file input
         const fileInputGroup = document.getElementById('hidden-file-input')?.closest('.form-group');
 
@@ -168,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (videoSpecificFields) videoSpecificFields.style.display = 'none';
             if (imageSpecificFields) imageSpecificFields.style.display = 'none';
             if (websiteSpecificFields) websiteSpecificFields.style.display = 'none';
+            if (documentSpecificFields) documentSpecificFields.style.display = 'none';
             if (fileInputGroup) fileInputGroup.style.display = 'block'; // Reset to show file picker by default
 
             // Default: File is required
@@ -212,6 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Set specific accept types for Image
                 if (category === 'Imej') {
                     fileInput.accept = '.jpg, .jpeg, .png';
+                } else if (category === 'Dokumen') {
+                    fileInput.accept = '.pdf, .doc, .docx';
                 } else {
                     fileInput.removeAttribute('accept'); // Reset for other types
                 }
@@ -286,6 +290,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Show Image Fields
                         if (imageSpecificFields) imageSpecificFields.style.display = 'block';
+                    } else if (category === 'Dokumen') {
+                        // VALIDATION FOR DOCUMENT
+                        // Check Size (Max 2MB)
+                        if (fileSize > 2 * 1024 * 1024) {
+                            alert('Maaf, saiz dokumen mestilah kurang daripada 2MB.');
+                            hiddenFileInput.value = ''; // Clear input
+                            return;
+                        }
+
+                        // Check Type
+                        // Note: file.type might vary, better to check extension or broad types
+                        const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                        // Or check extension manually if mime types are unreliable ? 
+                        // Let's rely on basic check first, if it fails user gets alert.
+                        // Actually extension check is safer for basic UI
+
+                        if (!validTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx)$/i)) {
+                            alert('Hanya format PDF, DOC dan DOCX dibenarkan.');
+                            hiddenFileInput.value = '';
+                            return;
+                        }
+
+                        if (documentSpecificFields) documentSpecificFields.style.display = 'block';
+
                     } else {
                         // Hide Image Fields for others
                         if (imageSpecificFields) imageSpecificFields.style.display = 'none';
