@@ -161,16 +161,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (categoryInput) {
             categoryInput.value = category;
 
-            // RESET UI
+            // Reset UI & Validation
             if (submissionArea) submissionArea.style.display = 'none';
             if (videoSpecificFields) videoSpecificFields.style.display = 'none';
             if (imageSpecificFields) imageSpecificFields.style.display = 'none';
             if (fileUploadSection) fileUploadSection.style.display = 'flex'; // Reset to show file picker by default
 
+            // Default: File is required
+            if (fileInput) fileInput.required = true;
+
             // VIDEO FLOW (No File Upload)
             if (category === 'Video') {
                 if (fileUploadSection) fileUploadSection.style.display = 'none'; // Hide file picker
                 if (videoSpecificFields) videoSpecificFields.style.display = 'block';
+
+                // Video: File NOT required, Link REQUIRED
+                if (fileInput) fileInput.required = false;
+
                 if (submissionArea) {
                     submissionArea.style.display = 'block';
                     setTimeout(() => {
