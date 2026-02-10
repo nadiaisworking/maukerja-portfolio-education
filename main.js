@@ -352,6 +352,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     const fileSize = file.size; // in bytes
                     const category = document.getElementById('selected-category').value;
 
+                    // VALIDATION FOR DOCUMENT
+                    if (category === 'Dokumen') {
+                        // Check Type (PDF only)
+                        if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+                            alert('Harap maaf. Sila muat naik fail dalam format PDF sahaja.');
+                            hiddenFileInput.value = ''; // Clear input
+                            fileNameDisplay.innerText = 'Tiada file dipilih';
+                            changeFileBtn.style.display = 'none';
+                            return; // Stop processing
+                        }
+
+                        // Check Size (Max 2MB)
+                        const maxSize = 2 * 1024 * 1024; // 2MB
+                        if (file.size > maxSize) {
+                            alert('Saiz fail terlalu besar. Sila pastikan fail anda bawah 2MB.');
+                            hiddenFileInput.value = ''; // Clear input
+                            fileNameDisplay.innerText = 'Tiada file dipilih';
+                            changeFileBtn.style.display = 'none';
+                            return; // Stop processing
+                        }
+                    }
+
                     // VALIDATION FOR IMAGE
                     if (category === 'Imej') {
                         // Check Size (Max 2MB)
@@ -564,14 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Reset function
                         window.resetImageTransform = function () {
-                            // Trigger onload logic again if image exists
                             if (imagePreview.src) {
-                                // Force reload/recalc? 
-                                // Actually just need to trigger the logic.
-                                // We can manually call a reset logic or just reload src.
-                                // Or, since we set this on file select, the onload will fire naturally.
-                                // So this might be redundant if we just changed src.
-                                // But if we want to reset WITHOUT changing file:
                                 scale = 1;
                                 pointX = 0;
                                 pointY = 0;
@@ -588,23 +603,3 @@ document.addEventListener('DOMContentLoaded', () => {
                         // window.resetImageTransform();
                     }
 
-
-                    if (fileNameDisplay) {
-                        fileNameDisplay.innerText = fileName;
-                        fileNameDisplay.style.color = '#333';
-                    }
-
-                    if (changeFileBtn) changeFileBtn.style.display = 'block';
-
-                    if (submissionArea) {
-                        submissionArea.style.display = 'block';
-                        // Small delay to ensure display is rendered before scrolling
-                        setTimeout(() => {
-                            submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }, 100);
-                    }
-                }
-            });
-        }
-    }
-});
