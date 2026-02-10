@@ -602,4 +602,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (window.resetImageTransform) {
                         // window.resetImageTransform();
                     }
+                }
+            });
+        }
+    }
+});
 
