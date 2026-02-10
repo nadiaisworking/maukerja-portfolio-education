@@ -169,7 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 // 3. Success Action
 
-                // Hide the submission area first (Visual Reset)
+                // SHOW MODAL FIRST to ensure it's visible before we rip out the active form
+                if (whatsappModal) {
+                    whatsappModal.classList.add('active');
+                }
+
+                // Hide the submission area (Visual Reset)
                 if (submissionArea) submissionArea.style.display = 'none';
 
                 // Reset the form
@@ -194,11 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const videoFrame = document.getElementById('video-preview-frame');
                 if (videoPreview) videoPreview.style.display = 'none';
                 if (videoFrame) videoFrame.src = '';
-
-                // Show WhatsApp Modal
-                if (whatsappModal) {
-                    whatsappModal.classList.add('active');
-                }
 
                 // Restore Button (for next time)
                 submitBtn.innerText = originalBtnText;
@@ -443,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Dimensions
                         const FRAME_WIDTH = 296;
                         const FRAME_HEIGHT = 221;
+                        const BUFFER = 2; // Extra pixels to ensure overlap and no white space
                         let baseWidth = 0;
                         let baseHeight = 0;
 
@@ -458,14 +459,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             imageSlider.value = 1;
 
                             if (imgRatio > frameRatio) {
-                                // Image is wider than frame -> Height = frame height, Width = auto
-                                baseHeight = FRAME_HEIGHT;
+                                // Image is wider than frame -> Height = frame height + buffer
+                                baseHeight = FRAME_HEIGHT + BUFFER;
                                 baseWidth = baseHeight * imgRatio;
                                 imagePreview.style.width = `${baseWidth}px`;
                                 imagePreview.style.height = `${baseHeight}px`;
                             } else {
-                                // Image is taller than frame -> Width = frame width, Height = auto
-                                baseWidth = FRAME_WIDTH;
+                                // Image is taller than frame -> Width = frame width + buffer
+                                baseWidth = FRAME_WIDTH + BUFFER;
                                 baseHeight = baseWidth / imgRatio;
                                 imagePreview.style.width = `${baseWidth}px`;
                                 imagePreview.style.height = `${baseHeight}px`;

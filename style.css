@@ -831,9 +831,13 @@ main {
     max-width: none;
     max-height: none;
 
+    /* Force minimum size to slightly exceed frame to prevent sub-pixel gaps */
+    min-width: 298px;
+    /* Frame is 296px */
+    min-height: 223px;
+    /* Frame is 221px */
+
     /* Default to cover-like behavior handled via JS or min dimensions */
-    min-width: 100%;
-    min-height: 100%;
     object-fit: contain;
     /* Not cover, we handle size manually or via CSS constraints */
 
@@ -847,6 +851,8 @@ main {
     will-change: transform;
     pointer-events: none;
     /* Drag events captured by frame */
+    flex-shrink: 0;
+    /* Prevent flex from shrinking it */
 }
 
 #image-slider-container {
