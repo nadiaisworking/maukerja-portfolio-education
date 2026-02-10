@@ -150,23 +150,74 @@ document.addEventListener('DOMContentLoaded', () => {
         formView.classList.add('active');
     });
 
-    document.getElementById('portfolio-form')?.addEventListener('submit', (e) => {
-        e.preventDefault();
+    // Handle Form Submission
+    const portfolioForm = document.getElementById('portfolio-form');
+    const whatsappModal = document.getElementById('whatsapp-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const submitBtn = portfolioForm.querySelector('button[type="submit"]');
 
-        // Show WhatsApp Modal
-        const modal = document.getElementById('whatsapp-modal');
-        if (modal) modal.classList.add('active');
-    });
+    if (portfolioForm) {
+        portfolioForm.addEventListener('submit', function (e) {
+            e.preventDefault();
 
-    // Close Modal Logic
-    document.getElementById('close-modal-btn')?.addEventListener('click', () => {
-        document.getElementById('whatsapp-modal')?.classList.remove('active');
-    });
+            // 1. Loading State
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.innerText = 'Sedang Hantar...';
+            submitBtn.disabled = true;
 
-    // Optional: Close on outside click
-    document.getElementById('whatsapp-modal')?.addEventListener('click', (e) => {
-        if (e.target.id === 'whatsapp-modal') {
-            e.target.classList.remove('active');
+            // 2. Simulate Network Request (1.5 seconds)
+            setTimeout(() => {
+                // 3. Success Action
+
+                // Hide the submission area first (Visual Reset)
+                if (submissionArea) submissionArea.style.display = 'none';
+
+                // Reset the form
+                portfolioForm.reset();
+
+                // Reset file input label
+                if (fileNameDisplay) fileNameDisplay.innerText = 'Tiada file dipilih';
+                if (changeFileBtn) changeFileBtn.style.display = 'none';
+
+                // Reset Specific Fields Visibility
+                const allSpecifics = document.querySelectorAll('[id$="-specific-fields"]');
+                allSpecifics.forEach(el => el.style.display = 'none');
+
+                // Reset Image Preview if exists
+                if (imagePreview) {
+                    imagePreview.src = '';
+                    if (imageUploadFrame) imageUploadFrame.style.display = 'none';
+                }
+
+                // Reset Video Preview if exists
+                const videoPreview = document.getElementById('video-preview-container');
+                const videoFrame = document.getElementById('video-preview-frame');
+                if (videoPreview) videoPreview.style.display = 'none';
+                if (videoFrame) videoFrame.src = '';
+
+                // Show WhatsApp Modal
+                if (whatsappModal) {
+                    whatsappModal.classList.add('active');
+                }
+
+                // Restore Button (for next time)
+                submitBtn.innerText = originalBtnText;
+                submitBtn.disabled = false;
+
+            }, 1500);
+        });
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function () {
+            if (whatsappModal) whatsappModal.classList.remove('active');
+        });
+    }
+
+    // Close modal if clicking outside
+    window.addEventListener('click', function (e) {
+        if (e.target === whatsappModal) {
+            whatsappModal.classList.remove('active');
         }
     });
 
