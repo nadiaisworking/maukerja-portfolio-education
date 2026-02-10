@@ -793,12 +793,82 @@ main {
 /* Blue - Image */
 .folder-blue .folder-tab,
 .folder-blue .folder-body {
-    background: #2196F3;
-}
-
-.folder-blue .folder-body {
     background: linear-gradient(180deg, #42A5F5 0%, #1E88E5 100%);
 }
+
+
+/* 
+================================================================
+   IMAGE UPLOAD STYLES
+================================================================
+*/
+.image-upload-frame {
+    width: 296px;
+    height: 221px;
+    background: #f0f0f0;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    display: none;
+    /* Hidden by default, toggled by JS */
+    cursor: grab;
+    touch-action: none;
+    /* Prevent scroll while dragging */
+    /* Flex centering for the image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-upload-frame:active {
+    cursor: grabbing;
+}
+
+#image-preview {
+    /* Remove fixed width/height to allow auto-sizing based on constraints */
+    max-width: none;
+    max-height: none;
+
+    /* Default to cover-like behavior handled via JS or min dimensions */
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: contain;
+    /* Not cover, we handle size manually or via CSS constraints */
+
+    /* Actually for 'cover' behavior with drag: 
+       We usually set min-width: 100% and min-height: 100% and let it overflow.
+       But to constrain, JS needs exact control. 
+       Let's start with basic auto sizing.
+    */
+    display: block;
+    transform-origin: center center;
+    will-change: transform;
+    pointer-events: none;
+    /* Drag events captured by frame */
+}
+
+#image-slider-container {
+    width: 100%;
+    max-width: 296px;
+    margin: 10px auto 0;
+    text-align: center;
+}
+
+#image-slider-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+#image-position-slider {
+    width: 100%;
+    cursor: pointer;
+}
+
 
 /* Red - Video */
 .folder-red .folder-tab,
