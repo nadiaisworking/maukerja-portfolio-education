@@ -176,72 +176,78 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoryInput = document.getElementById('selected-category');
         const fileInput = document.getElementById('hidden-file-input');
         const submissionArea = document.getElementById('submission-area');
-        const videoSpecificFields = document.getElementById('video-specific-fields');
-        const imageSpecificFields = document.getElementById('image-specific-fields');
-        const websiteSpecificFields = document.getElementById('website-specific-fields');
-        const documentSpecificFields = document.getElementById('document-specific-fields');
-        // Fix: Target the specific form-group for the file input
         const fileInputGroup = document.getElementById('hidden-file-input')?.closest('.form-group');
+
+        // Define mapping of category to specific field container ID
+        const categoryFieldsMap = {
+            'Imej': 'image-specific-fields',
+            'Video': 'video-specific-fields',
+            'Projek': 'website-specific-fields', // 'Projek' is the category value for Website
+            'Dokumen': 'document-specific-fields'
+        };
 
         if (categoryInput) {
             categoryInput.value = category;
 
-            // Reset UI & Validation
-            if (submissionArea) submissionArea.style.display = 'none';
-            if (videoSpecificFields) videoSpecificFields.style.display = 'none';
-            if (imageSpecificFields) imageSpecificFields.style.display = 'none';
-            if (websiteSpecificFields) websiteSpecificFields.style.display = 'none';
-            if (documentSpecificFields) documentSpecificFields.style.display = 'none';
-            if (fileInputGroup) fileInputGroup.style.display = 'block'; // Reset to show file picker by default
-
-            // Default: File is required
-            if (fileInput) fileInput.required = true;
-
-            // VIDEO FLOW (No File Upload)
-            if (category === 'Video') {
-                if (fileInputGroup) fileInputGroup.style.display = 'none'; // Hide file picker group
-                if (videoSpecificFields) videoSpecificFields.style.display = 'block';
-
-                // Video: File NOT required, Link REQUIRED
-                if (fileInput) fileInput.required = false;
-
-                if (submissionArea) {
-                    submissionArea.style.display = 'block';
-                    setTimeout(() => {
-                        submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
+            // 1. Reset all specific field containers
+            Object.values(categoryFieldsMap).forEach(id => {
+                const container = document.getElementById(id);
+                if (container) {
+                    container.style.display = 'none';
+                    // Remove required from all inputs inside hidden containers
+                    const inputs = container.querySelectorAll('input, textarea, select');
+                    inputs.forEach(input => input.required = false);
                 }
-                return; // Stop here, don't open file picker
+            });
+
+            // 2. Show active container and make its fields REQUIRED
+            const activeId = categoryFieldsMap[category];
+            const activeContainer = document.getElementById(activeId);
+            if (activeContainer) {
+                activeContainer.style.display = 'block';
+                const inputs = activeContainer.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => input.required = true);
             }
 
-            // website/PROJEK FLOW (No File Upload)
-            if (category === 'Projek') {
-                if (fileInputGroup) fileInputGroup.style.display = 'none'; // Hide file picker group
-                if (websiteSpecificFields) websiteSpecificFields.style.display = 'block';
+            // 3. Handle File Input Visibility & Requirement
+            // Image & Document need file upload. Video & Website do not (they have links).
+            if (category === 'Imej' || category === 'Dokumen') {
+                if (fileInputGroup) fileInputGroup.style.display = 'block';
+                if (fileInput) {
+                    fileInput.required = true;
+                    // Set specific accept types
+                    if (category === 'Imej') {
+                        fileInput.accept = '.jpg, .jpeg, .png';
+                    } else {
+                        fileInput.accept = '.pdf, .doc, .docx';
+                    }
 
-                // Website: File NOT required, Link REQUIRED
-                if (fileInput) fileInput.required = false;
+                    // Reset value if switching types? Optional, but safer to avoid wrong file type submission
+                    // fileInput.value = ''; 
+                    // Update: Actually we shouldn't clear it immediately if user just misclicked, 
+                    // but since we reuse the input, maybe safer to keep unless type mismatch.
 
-                if (submissionArea) {
-                    submissionArea.style.display = 'block';
-                    setTimeout(() => {
-                        submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
+                    // Trigger click only if no file selected yet? 
+                    // Or always trigger to let them choose? 
+                    // Expected behavior: clicking folder opens file dialog.
+                    fileInput.click();
                 }
-                return; // Stop here, don't open file picker
+            } else {
+                // Video or Website
+                if (fileInputGroup) fileInputGroup.style.display = 'none';
+                if (fileInput) {
+                    fileInput.required = false;
+                    fileInput.value = ''; // Clear file if switching to non-file category
+                }
             }
 
-            // FILE UPLOAD FLOWS
-            if (fileInput) {
-                // Set specific accept types for Image
-                if (category === 'Imej') {
-                    fileInput.accept = '.jpg, .jpeg, .png';
-                } else if (category === 'Dokumen') {
-                    fileInput.accept = '.pdf, .doc, .docx';
-                } else {
-                    fileInput.removeAttribute('accept'); // Reset for other types
-                }
-                fileInput.click();
+            // 4. Show Submission Area
+            if (submissionArea) {
+                submissionArea.style.display = 'block';
+                // Scroll to it
+                setTimeout(() => {
+                    submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
             }
         }
     };
