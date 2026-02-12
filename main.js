@@ -617,6 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-    };
+    }
+}
 });
 
