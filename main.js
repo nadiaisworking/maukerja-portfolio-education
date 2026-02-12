@@ -462,162 +462,161 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (imageSpecificFields) imageSpecificFields.style.display = 'none';
                         if (documentSpecificFields) documentSpecificFields.style.display = 'none';
                     }
-                }
 
-                // Slider Logic (Idempotent check/add)
-                // Slider & Drag Logic (Constrained)
-                if (imageSlider && imagePreview && imageUploadFrame && !imageSlider.hasAttribute('data-listener-attached')) {
+                    // Slider Logic (Idempotent check/add)
+                    // Slider & Drag Logic (Constrained)
+                    if (imageSlider && imagePreview && imageUploadFrame && !imageSlider.hasAttribute('data-listener-attached')) {
 
-                    let scale = 1;
-                    let pointX = 0;
-                    let pointY = 0;
-                    let startX = 0;
-                    let startY = 0;
-                    let isDragging = false;
+                        let scale = 1;
+                        let pointX = 0;
+                        let pointY = 0;
+                        let startX = 0;
+                        let startY = 0;
+                        let isDragging = false;
 
-                    // Dimensions
-                    const FRAME_WIDTH = 296;
-                    const FRAME_HEIGHT = 221;
-                    const BUFFER = 2; // Extra pixels to ensure overlap and no white space
-                    let baseWidth = 0;
-                    let baseHeight = 0;
+                        // Dimensions
+                        const FRAME_WIDTH = 296;
+                        const FRAME_HEIGHT = 221;
+                        const BUFFER = 2; // Extra pixels to ensure overlap and no white space
+                        let baseWidth = 0;
+                        let baseHeight = 0;
 
-                    // Calculate setup when image loads
-                    imagePreview.onload = function () {
-                        const imgRatio = imagePreview.naturalWidth / imagePreview.naturalHeight;
-                        const frameRatio = FRAME_WIDTH / FRAME_HEIGHT;
+                        // Calculate setup when image loads
+                        imagePreview.onload = function () {
+                            const imgRatio = imagePreview.naturalWidth / imagePreview.naturalHeight;
+                            const frameRatio = FRAME_WIDTH / FRAME_HEIGHT;
 
-                        // Reset transform
-                        scale = 1;
-                        pointX = 0;
-                        pointY = 0;
-                        imageSlider.value = 1;
-
-                        if (imgRatio > frameRatio) {
-                            // Image is wider than frame -> Height = frame height + buffer
-                            baseHeight = FRAME_HEIGHT + BUFFER;
-                            baseWidth = baseHeight * imgRatio;
-                            imagePreview.style.width = `${baseWidth}px`;
-                            imagePreview.style.height = `${baseHeight}px`;
-                        } else {
-                            // Image is taller than frame -> Width = frame width + buffer
-                            baseWidth = FRAME_WIDTH + BUFFER;
-                            baseHeight = baseWidth / imgRatio;
-                            imagePreview.style.width = `${baseWidth}px`;
-                            imagePreview.style.height = `${baseHeight}px`;
-                        }
-                        updateTransform();
-                    };
-
-                    // Helper to clamp values
-                    function clamp(value, min, max) {
-                        return Math.min(Math.max(value, min), max);
-                    }
-
-                    function getLimits() {
-                        const currentWidth = baseWidth * scale;
-                        const currentHeight = baseHeight * scale;
-
-                        // Calculate excess dimension
-                        const excessX = Math.max(0, currentWidth - FRAME_WIDTH);
-                        const excessY = Math.max(0, currentHeight - FRAME_HEIGHT);
-
-                        // You can pan half the excess in each direction
-                        return {
-                            x: excessX / 2,
-                            y: excessY / 2
-                        };
-                    }
-
-                    // Zoom Slider
-                    imageSlider.addEventListener('input', (e) => {
-                        scale = parseFloat(e.target.value);
-                        // Re-clamp current position if we zoom out
-                        const limits = getLimits();
-                        pointX = clamp(pointX, -limits.x, limits.x);
-                        pointY = clamp(pointY, -limits.y, limits.y);
-                        updateTransform();
-                    });
-
-                    function updateTransform() {
-                        imagePreview.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
-                    }
-
-                    // Drag Events (Mouse)
-                    imageUploadFrame.addEventListener('mousedown', (e) => {
-                        e.preventDefault();
-                        startX = e.clientX - pointX;
-                        startY = e.clientY - pointY;
-                        isDragging = true;
-                    });
-
-                    window.addEventListener('mousemove', (e) => {
-                        if (!isDragging) return;
-                        e.preventDefault();
-
-                        let newX = e.clientX - startX;
-                        let newY = e.clientY - startY;
-
-                        const limits = getLimits();
-                        pointX = clamp(newX, -limits.x, limits.x);
-                        pointY = clamp(newY, -limits.y, limits.y);
-
-                        updateTransform();
-                    });
-
-                    window.addEventListener('mouseup', () => {
-                        isDragging = false;
-                    });
-
-                    // Drag Events (Touch)
-                    imageUploadFrame.addEventListener('touchstart', (e) => {
-                        if (e.touches.length === 1) {
-                            e.preventDefault();
-                            startX = e.touches[0].clientX - pointX;
-                            startY = e.touches[0].clientY - pointY;
-                            isDragging = true;
-                        }
-                    }, { passive: false });
-
-                    window.addEventListener('touchmove', (e) => {
-                        if (!isDragging) return;
-                        e.preventDefault();
-
-                        let newX = e.touches[0].clientX - startX;
-                        let newY = e.touches[0].clientY - startY;
-
-                        const limits = getLimits();
-                        pointX = clamp(newX, -limits.x, limits.x);
-                        pointY = clamp(newY, -limits.y, limits.y);
-
-                        updateTransform();
-                    }, { passive: false });
-
-                    window.addEventListener('touchend', () => {
-                        isDragging = false;
-                    });
-
-                    // Reset function
-                    window.resetImageTransform = function () {
-                        if (imagePreview.src) {
+                            // Reset transform
                             scale = 1;
                             pointX = 0;
                             pointY = 0;
                             imageSlider.value = 1;
+
+                            if (imgRatio > frameRatio) {
+                                // Image is wider than frame -> Height = frame height + buffer
+                                baseHeight = FRAME_HEIGHT + BUFFER;
+                                baseWidth = baseHeight * imgRatio;
+                                imagePreview.style.width = `${baseWidth}px`;
+                                imagePreview.style.height = `${baseHeight}px`;
+                            } else {
+                                // Image is taller than frame -> Width = frame width + buffer
+                                baseWidth = FRAME_WIDTH + BUFFER;
+                                baseHeight = baseWidth / imgRatio;
+                                imagePreview.style.width = `${baseWidth}px`;
+                                imagePreview.style.height = `${baseHeight}px`;
+                            }
                             updateTransform();
+                        };
+
+                        // Helper to clamp values
+                        function clamp(value, min, max) {
+                            return Math.min(Math.max(value, min), max);
                         }
+
+                        function getLimits() {
+                            const currentWidth = baseWidth * scale;
+                            const currentHeight = baseHeight * scale;
+
+                            // Calculate excess dimension
+                            const excessX = Math.max(0, currentWidth - FRAME_WIDTH);
+                            const excessY = Math.max(0, currentHeight - FRAME_HEIGHT);
+
+                            // You can pan half the excess in each direction
+                            return {
+                                x: excessX / 2,
+                                y: excessY / 2
+                            };
+                        }
+
+                        // Zoom Slider
+                        imageSlider.addEventListener('input', (e) => {
+                            scale = parseFloat(e.target.value);
+                            // Re-clamp current position if we zoom out
+                            const limits = getLimits();
+                            pointX = clamp(pointX, -limits.x, limits.x);
+                            pointY = clamp(pointY, -limits.y, limits.y);
+                            updateTransform();
+                        });
+
+                        function updateTransform() {
+                            imagePreview.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+                        }
+
+                        // Drag Events (Mouse)
+                        imageUploadFrame.addEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            startX = e.clientX - pointX;
+                            startY = e.clientY - pointY;
+                            isDragging = true;
+                        });
+
+                        window.addEventListener('mousemove', (e) => {
+                            if (!isDragging) return;
+                            e.preventDefault();
+
+                            let newX = e.clientX - startX;
+                            let newY = e.clientY - startY;
+
+                            const limits = getLimits();
+                            pointX = clamp(newX, -limits.x, limits.x);
+                            pointY = clamp(newY, -limits.y, limits.y);
+
+                            updateTransform();
+                        });
+
+                        window.addEventListener('mouseup', () => {
+                            isDragging = false;
+                        });
+
+                        // Drag Events (Touch)
+                        imageUploadFrame.addEventListener('touchstart', (e) => {
+                            if (e.touches.length === 1) {
+                                e.preventDefault();
+                                startX = e.touches[0].clientX - pointX;
+                                startY = e.touches[0].clientY - pointY;
+                                isDragging = true;
+                            }
+                        }, { passive: false });
+
+                        window.addEventListener('touchmove', (e) => {
+                            if (!isDragging) return;
+                            e.preventDefault();
+
+                            let newX = e.touches[0].clientX - startX;
+                            let newY = e.touches[0].clientY - startY;
+
+                            const limits = getLimits();
+                            pointX = clamp(newX, -limits.x, limits.x);
+                            pointY = clamp(newY, -limits.y, limits.y);
+
+                            updateTransform();
+                        }, { passive: false });
+
+                        window.addEventListener('touchend', () => {
+                            isDragging = false;
+                        });
+
+                        // Reset function
+                        window.resetImageTransform = function () {
+                            if (imagePreview.src) {
+                                scale = 1;
+                                pointX = 0;
+                                pointY = 0;
+                                imageSlider.value = 1;
+                                updateTransform();
+                            }
+                        }
+
+                        imageSlider.setAttribute('data-listener-attached', 'true');
                     }
 
-                    imageSlider.setAttribute('data-listener-attached', 'true');
+                    // Reset if function exists
+                    if (window.resetImageTransform) {
+                        // window.resetImageTransform();
+                    }
                 }
-
-                // Reset if function exists
-                if (window.resetImageTransform) {
-                    // window.resetImageTransform();
-                }
-            }
-        });
+            });
+        }
     }
-}
 });
 
