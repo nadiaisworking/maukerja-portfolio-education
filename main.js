@@ -445,11 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     imagePreview.src = e.target.result;
                                     if (imageUploadFrame) imageUploadFrame.style.display = 'flex';
 
-                                    // Reset Slider
-                                    if (imageSlider) {
-                                        imageSlider.value = 50;
-                                        imagePreview.style.objectPosition = '50% 50%';
-                                    }
+                                    // Reset Slider logic moved to imagePreview.onload to handle contain/cover logic
                                     if (imageSliderContainer) imageSliderContainer.style.display = 'block';
                                 }
                                 reader.readAsDataURL(file);
