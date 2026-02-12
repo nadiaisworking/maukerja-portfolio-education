@@ -569,8 +569,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             e.preventDefault();
                             startX = e.clientX - pointX;
                             startY = e.clientY - pointY;
-                            isDragging = true;
-                            imageUploadFrame.style.cursor = 'grabbing';
+
+                            const limits = getLimits();
+                            // ONLY start dragging if movement is possible
+                            if (limits.x > 0 || limits.y > 0) {
+                                isDragging = true;
+                                imageUploadFrame.style.cursor = 'grabbing';
+                            }
                         });
 
                         window.addEventListener('mousemove', (e) => {
@@ -589,6 +594,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         window.addEventListener('mouseup', () => {
                             isDragging = false;
+                            // Only reset if we were allowed to drag
+                            const limits = getLimits();
+                            if (limits.x > 0 || limits.y > 0) {
+                                imageUploadFrame.style.cursor = 'grab';
+                            } else {
+                                imageUploadFrame.style.cursor = 'default'; // Or grab if still potentially zoomable
+                            }
+                            // Simplified: Just reset to grab (assuming user might zoom in later)
                             imageUploadFrame.style.cursor = 'grab';
                         });
 
@@ -598,7 +611,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 e.preventDefault();
                                 startX = e.touches[0].clientX - pointX;
                                 startY = e.touches[0].clientY - pointY;
-                                isDragging = true;
+
+                                const limits = getLimits();
+                                if (limits.x > 0 || limits.y > 0) {
+                                    isDragging = true;
+                                }
                             }
                         }, { passive: false });
 
