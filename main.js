@@ -463,19 +463,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Slider & Drag Logic (Constrained)
                     if (imageSlider && imagePreview && imageUploadFrame && !imageSlider.hasAttribute('data-listener-attached')) {
 
-                        let scale = 1;
-                        let pointX = 0;
-                        let pointY = 0;
-                        let startX = 0;
-                        let startY = 0;
-                        let isDragging = false;
+                        // Shared State Object
+                        const state = {
+                            scale: 1,
+                            pX: 0,
+                            pY: 0,
+                            baseW: 0,
+                            baseH: 0,
+                            startX: 0,
+                            startY: 0,
+                            isDragging: false
+                        };
 
                         // Dimensions
                         const FRAME_WIDTH = 296;
                         const FRAME_HEIGHT = 221;
-                        const BUFFER = 2; // Extra pixels to ensure overlap and no white space
-                        let baseWidth = 0;
-                        let baseHeight = 0;
 
                         // Calculate setup when image loads
                         imagePreview.onload = function () {
@@ -483,7 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             const imgHeight = imagePreview.naturalHeight;
 
                             // 1. Calculate Scale to CONTAIN image within frame
-                            // We want the image to be fully visible by default.
                             const scaleX = FRAME_WIDTH / imgWidth;
                             const scaleY = FRAME_HEIGHT / imgHeight;
                             const scaleContain = Math.min(scaleX, scaleY);
@@ -492,31 +493,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             const scaleCover = Math.max(scaleX, scaleY);
 
                             // Apply Contain Scale
-                            baseWidth = imgWidth * scaleContain;
-                            baseHeight = imgHeight * scaleContain;
+                            state.baseW = imgWidth * scaleContain;
+                            state.baseH = imgHeight * scaleContain;
 
-                            imagePreview.style.width = `${baseWidth}px`;
-                            imagePreview.style.height = `${baseHeight}px`;
+                            imagePreview.style.width = `${state.baseW}px`;
+                            imagePreview.style.height = `${state.baseH}px`;
 
                             // 3. Reset State
-                            scale = 1; // Current scale relative to base dimensions
-                            pointX = 0;
-                            pointY = 0;
+                            state.scale = 1;
+                            state.pX = 0;
+                            state.pY = 0;
                             imageSlider.value = 1;
 
-                            // 4. Set Slider Max to allow zooming up to Cover + extra
-                            // If we are at Contain (1x), we need to reach Cover.
-                            // relativeCoverScale = scaleCover / scaleContain
-                            // We give a bit more room (e.g. 1.5x cover or just fixed max)
-                            // Let's make max dynamic or fixed large enough. 
-                            // If Image is huge, scaleContain is small. 
-                            // If Image is small, scaleContain is large. 
-                            // The base dimensions are set to FIT the frame.
-                            // So baseWidth <= FRAME_WIDTH and baseHeight <= FRAME_HEIGHT.
-                            // To Cover, we need to scale up.
-
+                            // 4. Set Slider Max
                             const relativeCover = scaleCover / scaleContain;
-                            // Set max to at least relativeCover * 1.5 to allow freedom
                             const newMax = Math.max(3, relativeCover * 1.5);
                             imageSlider.max = newMax;
 
@@ -529,11 +519,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
 
                         function getLimits() {
-                            const currentWidth = baseWidth * scale;
-                            const currentHeight = baseHeight * scale;
+                            const currentWidth = state.baseW * state.scale;
+                            const currentHeight = state.baseH * state.scale;
 
                             // Calculate excess dimension
-                            // If content is smaller than frame, excess is 0.
                             const excessX = Math.max(0, currentWidth - FRAME_WIDTH);
                             const excessY = Math.max(0, currentHeight - FRAME_HEIGHT);
 
@@ -543,102 +532,94 @@ document.addEventListener('DOMContentLoaded', () => {
                             };
                         }
 
+                        function updateTransform() {
+                            imagePreview.style.transform = `translate(${state.pX}px, ${state.pY}px) scale(${state.scale})`;
+                        }
+
                         // Zoom Slider
                         imageSlider.addEventListener('input', (e) => {
-                            scale = parseFloat(e.target.value);
-                            // Re-clamp current position if we zoom out
+                            state.scale = parseFloat(e.target.value);
                             const limits = getLimits();
-
-                            // If zoomed out where image is smaller than frame, pointX/Y should be 0 (center)
-                            // The clamping handles this because limits will be 0, so clamps to 0.
-                            pointX = clamp(pointX, -limits.x, limits.x);
-                            pointY = clamp(pointY, -limits.y, limits.y);
+                            state.pX = clamp(state.pX, -limits.x, limits.x);
+                            state.pY = clamp(state.pY, -limits.y, limits.y);
                             updateTransform();
                         });
-
-                        function updateTransform() {
-                            imagePreview.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
-                        }
 
                         // Drag Events (Mouse)
                         imageUploadFrame.addEventListener('mousedown', (e) => {
                             e.preventDefault();
-                            startX = e.clientX - pointX;
-                            startY = e.clientY - pointY;
+                            state.startX = e.clientX - state.pX;
+                            state.startY = e.clientY - state.pY;
 
                             const limits = getLimits();
-                            // ONLY start dragging if movement is possible
                             if (limits.x > 0 || limits.y > 0) {
-                                isDragging = true;
+                                state.isDragging = true;
                                 imageUploadFrame.style.cursor = 'grabbing';
                             }
                         });
 
                         window.addEventListener('mousemove', (e) => {
-                            if (!isDragging) return;
+                            if (!state.isDragging) return;
                             e.preventDefault();
 
-                            let newX = e.clientX - startX;
-                            let newY = e.clientY - startY;
+                            let newX = e.clientX - state.startX;
+                            let newY = e.clientY - state.startY;
 
                             const limits = getLimits();
-                            pointX = clamp(newX, -limits.x, limits.x);
-                            pointY = clamp(newY, -limits.y, limits.y);
+                            state.pX = clamp(newX, -limits.x, limits.x);
+                            state.pY = clamp(newY, -limits.y, limits.y);
 
                             updateTransform();
                         });
 
                         window.addEventListener('mouseup', () => {
-                            isDragging = false;
-                            // Only reset if we were allowed to drag
+                            state.isDragging = false;
                             const limits = getLimits();
                             if (limits.x > 0 || limits.y > 0) {
                                 imageUploadFrame.style.cursor = 'grab';
                             } else {
-                                imageUploadFrame.style.cursor = 'default'; // Or grab if still potentially zoomable
+                                imageUploadFrame.style.cursor = 'default';
                             }
-                            // Simplified: Just reset to grab (assuming user might zoom in later)
-                            imageUploadFrame.style.cursor = 'grab';
                         });
 
                         // Drag Events (Touch)
                         imageUploadFrame.addEventListener('touchstart', (e) => {
                             if (e.touches.length === 1) {
                                 e.preventDefault();
-                                startX = e.touches[0].clientX - pointX;
-                                startY = e.touches[0].clientY - pointY;
+                                state.startX = e.touches[0].clientX - state.pX;
+                                state.startY = e.touches[0].clientY - state.pY;
 
                                 const limits = getLimits();
                                 if (limits.x > 0 || limits.y > 0) {
-                                    isDragging = true;
+                                    state.isDragging = true;
                                 }
                             }
                         }, { passive: false });
 
                         window.addEventListener('touchmove', (e) => {
-                            if (!isDragging) return;
+                            if (!state.isDragging) return;
                             e.preventDefault();
 
-                            let newX = e.touches[0].clientX - startX;
-                            let newY = e.touches[0].clientY - startY;
+                            let newX = e.touches[0].clientX - state.startX;
+                            let newY = e.touches[0].clientY - state.startY;
 
                             const limits = getLimits();
-                            pointX = clamp(newX, -limits.x, limits.x);
-                            pointY = clamp(newY, -limits.y, limits.y);
+                            state.pX = clamp(newX, -limits.x, limits.x);
+                            state.pY = clamp(newY, -limits.y, limits.y);
 
                             updateTransform();
                         }, { passive: false });
 
                         window.addEventListener('touchend', () => {
-                            isDragging = false;
+                            state.isDragging = false;
                         });
 
                         // Reset function
                         window.resetImageTransform = function () {
                             if (imagePreview.src) {
-                                scale = 1;
-                                pointX = 0;
-                                pointY = 0;
+                                state.scale = 1;
+                                state.pX = 0;
+                                state.pY = 0;
                                 imageSlider.value = 1;
                                 updateTransform();
                             }
