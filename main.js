@@ -270,13 +270,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (category === 'Imej') {
                         fileInput.accept = '.jpg, .jpeg, .png';
                     } else {
-                        fileInput.accept = '.pdf, .doc, .docx';
+                        fileInput.accept = '.pdf'; // Strict PDF only
                     }
 
-                    // Reset value if switching types? Optional, but safer to avoid wrong file type submission
-                    // fileInput.value = ''; 
-                    // Update: Actually we shouldn't clear it immediately if user just misclicked, 
-                    // but since we reuse the input, maybe safer to keep unless type mismatch.
+                    // Reset value to ensure 'change' event fires even if same file is selected again
+                    fileInput.value = '';
+
 
                     // Trigger click only if no file selected yet? 
                     // Or always trigger to let them choose? 
@@ -340,6 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Change File Button Logic
         if (changeFileBtn) {
             changeFileBtn.addEventListener('click', () => {
+                hiddenFileInput.value = ''; // Reset to allow re-selecting same file
                 hiddenFileInput.click();
             });
         }
@@ -351,260 +351,272 @@ document.addEventListener('DOMContentLoaded', () => {
                     const fileName = file.name;
                     const fileSize = file.size; // in bytes
                     const category = document.getElementById('selected-category').value;
+                    let isValid = true;
+                    let errorMessage = '';
 
-                    // VALIDATION FOR DOCUMENT
+                    // 1. VALIDATION LOGIC
                     if (category === 'Dokumen') {
                         // Check Type (PDF only)
                         if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-                            alert('Harap maaf. Sila muat naik fail dalam format PDF sahaja.');
-                            hiddenFileInput.value = ''; // Clear input
-                            fileNameDisplay.innerText = 'Tiada file dipilih';
-                            changeFileBtn.style.display = 'none';
-                            return; // Stop processing
+                            isValid = false;
+                            errorMessage = 'Harap maaf. Sila muat naik fail dalam format PDF sahaja.';
                         }
-
                         // Check Size (Max 2MB)
-                        const maxSize = 2 * 1024 * 1024; // 2MB
-                        if (file.size > maxSize) {
-                            alert('Saiz fail terlalu besar. Sila pastikan fail anda bawah 2MB.');
-                            hiddenFileInput.value = ''; // Clear input
-                            fileNameDisplay.innerText = 'Tiada file dipilih';
-                            changeFileBtn.style.display = 'none';
-                            return; // Stop processing
+                        else if (fileSize > 2 * 1024 * 1024) {
+                            isValid = false;
+                            errorMessage = 'Saiz fail terlalu besar. Sila pastikan fail anda bawah 2MB.';
                         }
                     }
-
-                    // VALIDATION FOR IMAGE
-                    if (category === 'Imej') {
+                    else if (category === 'Imej') {
                         // Check Size (Max 2MB)
                         if (fileSize > 2 * 1024 * 1024) {
-                            alert('Maaf, saiz file gambar mestilah kurang daripada 2MB.');
-                            hiddenFileInput.value = ''; // Clear input
-                            return;
+                            isValid = false;
+                            errorMessage = 'Maaf, saiz file gambar mestilah kurang daripada 2MB.';
                         }
-
                         // Check Type
-                        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-                        if (!validTypes.includes(file.type)) {
-                            alert('Hanya format JPG dan PNG dibenarkan untuk Gambar.');
-                            hiddenFileInput.value = ''; // Clear input
-                            return;
-                        }
-
-                        // Show Image Fields
-                        if (imageSpecificFields) imageSpecificFields.style.display = 'block';
-                    } else if (category === 'Dokumen') {
-                        // VALIDATION FOR DOCUMENT
-                        // Check Size (Max 2MB)
-                        if (fileSize > 2 * 1024 * 1024) {
-                            alert('Maaf, saiz dokumen mestilah kurang daripada 2MB.');
-                            hiddenFileInput.value = ''; // Clear input
-                            return;
-                        }
-
-                        // Check Type
-                        // Note: file.type might vary, better to check extension or broad types
-                        const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-                        // Or check extension manually if mime types are unreliable ? 
-                        // Let's rely on basic check first, if it fails user gets alert.
-                        // Actually extension check is safer for basic UI
-
-                        if (!validTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx)$/i)) {
-                            alert('Hanya format PDF, DOC dan DOCX dibenarkan.');
-                            hiddenFileInput.value = '';
-                            return;
-                        }
-
-                        if (documentSpecificFields) documentSpecificFields.style.display = 'block';
-
-                    } else {
-                        // Hide Image Fields for others
-                        if (imageSpecificFields) imageSpecificFields.style.display = 'none';
-                    }
-
-                    // Display Preview
-                    const imagePreview = document.getElementById('image-preview');
-                    const imageUploadFrame = document.querySelector('.image-upload-frame');
-                    const imageSliderContainer = document.getElementById('image-slider-container');
-                    const imageSlider = document.getElementById('image-position-slider');
-
-                    if (imagePreview) {
-                        // Reset everything first
-                        imagePreview.src = '';
-                        if (imageUploadFrame) imageUploadFrame.style.display = 'none';
-                        if (imageSliderContainer) imageSliderContainer.style.display = 'none';
-
-                        if (category === 'Imej' && file.type.startsWith('image/')) {
-                            const reader = new FileReader();
-                            reader.onload = function (e) {
-                                imagePreview.src = e.target.result;
-                                if (imageUploadFrame) imageUploadFrame.style.display = 'flex';
-
-                                // Reset Slider
-                                if (imageSlider) {
-                                    imageSlider.value = 50;
-                                    imagePreview.style.objectPosition = '50% 50%';
-                                }
-                                if (imageSliderContainer) imageSliderContainer.style.display = 'block';
+                        else {
+                            const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                            if (!validTypes.includes(file.type)) {
+                                isValid = false;
+                                errorMessage = 'Hanya format JPG dan PNG dibenarkan untuk Gambar.';
                             }
-                            reader.readAsDataURL(file);
                         }
                     }
 
-                    // Slider Logic (Idempotent check/add)
-                    // Slider & Drag Logic (Constrained)
-                    if (imageSlider && imagePreview && imageUploadFrame && !imageSlider.hasAttribute('data-listener-attached')) {
+                    // 2. HANDLE VALIDATION RESULT
+                    if (!isValid) {
+                        alert(errorMessage);
+                        hiddenFileInput.value = ''; // Clear input to allow retry
 
-                        let scale = 1;
-                        let pointX = 0;
-                        let pointY = 0;
-                        let startX = 0;
-                        let startY = 0;
-                        let isDragging = false;
+                        // RECOVERABILITY: Keep the UI in a state where user can try again
+                        fileNameDisplay.innerText = 'Tiada file dipilih';
+                        changeFileBtn.style.display = 'inline-block'; // Show 'Change' button so they can retry
+                        changeFileBtn.innerText = 'Pilih Fail Semula'; // Rename to 'Retry'
 
-                        // Dimensions
-                        const FRAME_WIDTH = 296;
-                        const FRAME_HEIGHT = 221;
-                        const BUFFER = 2; // Extra pixels to ensure overlap and no white space
-                        let baseWidth = 0;
-                        let baseHeight = 0;
+                        // Hide specific fields
+                        if (imageSpecificFields) imageSpecificFields.style.display = 'none';
+                        if (documentSpecificFields) documentSpecificFields.style.display = 'none';
 
-                        // Calculate setup when image loads
-                        imagePreview.onload = function () {
-                            const imgRatio = imagePreview.naturalWidth / imagePreview.naturalHeight;
-                            const frameRatio = FRAME_WIDTH / FRAME_HEIGHT;
+                        return; // Stop processing
+                    }
 
-                            // Reset transform
+                    // 3. SUCCESS STATE
+                    // Update Name Display
+                    if (fileNameDisplay) {
+                        fileNameDisplay.innerText = file.name;
+                        fileNameDisplay.style.color = '#333';
+                    }
+
+                    // Show Change Button (Restored to normal text)
+                    if (changeFileBtn) {
+                        changeFileBtn.style.display = 'inline-block';
+                        changeFileBtn.innerText = 'Tukar';
+                    }
+
+                    // Show Submission Area
+                    if (submissionArea) {
+                        submissionArea.style.display = 'block';
+                        // Small delay to ensure display is rendered before scrolling
+                        setTimeout(() => {
+                            submissionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+
+                    // 4. SHOW CATEGORY SPECIFIC FIELDS & PREVIEWS
+                    if (category === 'Imej') {
+                        if (imageSpecificFields) imageSpecificFields.style.display = 'block';
+                        if (documentSpecificFields) documentSpecificFields.style.display = 'none';
+
+                        // Display Preview
+                        const imagePreview = document.getElementById('image-preview');
+                        const imageUploadFrame = document.querySelector('.image-upload-frame');
+                        const imageSliderContainer = document.getElementById('image-slider-container');
+                        const imageSlider = document.getElementById('image-position-slider');
+
+                        if (imagePreview) {
+                            // Reset everything first
+                            imagePreview.src = '';
+                            if (imageUploadFrame) imageUploadFrame.style.display = 'none';
+                            if (imageSliderContainer) imageSliderContainer.style.display = 'none';
+
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    imagePreview.src = e.target.result;
+                                    if (imageUploadFrame) imageUploadFrame.style.display = 'flex';
+
+                                    // Reset Slider
+                                    if (imageSlider) {
+                                        imageSlider.value = 50;
+                                        imagePreview.style.objectPosition = '50% 50%';
+                                    }
+                                    if (imageSliderContainer) imageSliderContainer.style.display = 'block';
+                                }
+                                reader.readAsDataURL(file);
+                            }
+                        }
+                    } else if (category === 'Dokumen') {
+                        if (documentSpecificFields) documentSpecificFields.style.display = 'block';
+                        if (imageSpecificFields) imageSpecificFields.style.display = 'none';
+                    } else {
+                        if (imageSpecificFields) imageSpecificFields.style.display = 'none';
+                        if (documentSpecificFields) documentSpecificFields.style.display = 'none';
+                    }
+                }
+
+                // Slider Logic (Idempotent check/add)
+                // Slider & Drag Logic (Constrained)
+                if (imageSlider && imagePreview && imageUploadFrame && !imageSlider.hasAttribute('data-listener-attached')) {
+
+                    let scale = 1;
+                    let pointX = 0;
+                    let pointY = 0;
+                    let startX = 0;
+                    let startY = 0;
+                    let isDragging = false;
+
+                    // Dimensions
+                    const FRAME_WIDTH = 296;
+                    const FRAME_HEIGHT = 221;
+                    const BUFFER = 2; // Extra pixels to ensure overlap and no white space
+                    let baseWidth = 0;
+                    let baseHeight = 0;
+
+                    // Calculate setup when image loads
+                    imagePreview.onload = function () {
+                        const imgRatio = imagePreview.naturalWidth / imagePreview.naturalHeight;
+                        const frameRatio = FRAME_WIDTH / FRAME_HEIGHT;
+
+                        // Reset transform
+                        scale = 1;
+                        pointX = 0;
+                        pointY = 0;
+                        imageSlider.value = 1;
+
+                        if (imgRatio > frameRatio) {
+                            // Image is wider than frame -> Height = frame height + buffer
+                            baseHeight = FRAME_HEIGHT + BUFFER;
+                            baseWidth = baseHeight * imgRatio;
+                            imagePreview.style.width = `${baseWidth}px`;
+                            imagePreview.style.height = `${baseHeight}px`;
+                        } else {
+                            // Image is taller than frame -> Width = frame width + buffer
+                            baseWidth = FRAME_WIDTH + BUFFER;
+                            baseHeight = baseWidth / imgRatio;
+                            imagePreview.style.width = `${baseWidth}px`;
+                            imagePreview.style.height = `${baseHeight}px`;
+                        }
+                        updateTransform();
+                    };
+
+                    // Helper to clamp values
+                    function clamp(value, min, max) {
+                        return Math.min(Math.max(value, min), max);
+                    }
+
+                    function getLimits() {
+                        const currentWidth = baseWidth * scale;
+                        const currentHeight = baseHeight * scale;
+
+                        // Calculate excess dimension
+                        const excessX = Math.max(0, currentWidth - FRAME_WIDTH);
+                        const excessY = Math.max(0, currentHeight - FRAME_HEIGHT);
+
+                        // You can pan half the excess in each direction
+                        return {
+                            x: excessX / 2,
+                            y: excessY / 2
+                        };
+                    }
+
+                    // Zoom Slider
+                    imageSlider.addEventListener('input', (e) => {
+                        scale = parseFloat(e.target.value);
+                        // Re-clamp current position if we zoom out
+                        const limits = getLimits();
+                        pointX = clamp(pointX, -limits.x, limits.x);
+                        pointY = clamp(pointY, -limits.y, limits.y);
+                        updateTransform();
+                    });
+
+                    function updateTransform() {
+                        imagePreview.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+                    }
+
+                    // Drag Events (Mouse)
+                    imageUploadFrame.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        startX = e.clientX - pointX;
+                        startY = e.clientY - pointY;
+                        isDragging = true;
+                    });
+
+                    window.addEventListener('mousemove', (e) => {
+                        if (!isDragging) return;
+                        e.preventDefault();
+
+                        let newX = e.clientX - startX;
+                        let newY = e.clientY - startY;
+
+                        const limits = getLimits();
+                        pointX = clamp(newX, -limits.x, limits.x);
+                        pointY = clamp(newY, -limits.y, limits.y);
+
+                        updateTransform();
+                    });
+
+                    window.addEventListener('mouseup', () => {
+                        isDragging = false;
+                    });
+
+                    // Drag Events (Touch)
+                    imageUploadFrame.addEventListener('touchstart', (e) => {
+                        if (e.touches.length === 1) {
+                            e.preventDefault();
+                            startX = e.touches[0].clientX - pointX;
+                            startY = e.touches[0].clientY - pointY;
+                            isDragging = true;
+                        }
+                    }, { passive: false });
+
+                    window.addEventListener('touchmove', (e) => {
+                        if (!isDragging) return;
+                        e.preventDefault();
+
+                        let newX = e.touches[0].clientX - startX;
+                        let newY = e.touches[0].clientY - startY;
+
+                        const limits = getLimits();
+                        pointX = clamp(newX, -limits.x, limits.x);
+                        pointY = clamp(newY, -limits.y, limits.y);
+
+                        updateTransform();
+                    }, { passive: false });
+
+                    window.addEventListener('touchend', () => {
+                        isDragging = false;
+                    });
+
+                    // Reset function
+                    window.resetImageTransform = function () {
+                        if (imagePreview.src) {
                             scale = 1;
                             pointX = 0;
                             pointY = 0;
                             imageSlider.value = 1;
-
-                            if (imgRatio > frameRatio) {
-                                // Image is wider than frame -> Height = frame height + buffer
-                                baseHeight = FRAME_HEIGHT + BUFFER;
-                                baseWidth = baseHeight * imgRatio;
-                                imagePreview.style.width = `${baseWidth}px`;
-                                imagePreview.style.height = `${baseHeight}px`;
-                            } else {
-                                // Image is taller than frame -> Width = frame width + buffer
-                                baseWidth = FRAME_WIDTH + BUFFER;
-                                baseHeight = baseWidth / imgRatio;
-                                imagePreview.style.width = `${baseWidth}px`;
-                                imagePreview.style.height = `${baseHeight}px`;
-                            }
                             updateTransform();
-                        };
-
-                        // Helper to clamp values
-                        function clamp(value, min, max) {
-                            return Math.min(Math.max(value, min), max);
                         }
-
-                        function getLimits() {
-                            const currentWidth = baseWidth * scale;
-                            const currentHeight = baseHeight * scale;
-
-                            // Calculate excess dimension
-                            const excessX = Math.max(0, currentWidth - FRAME_WIDTH);
-                            const excessY = Math.max(0, currentHeight - FRAME_HEIGHT);
-
-                            // You can pan half the excess in each direction
-                            return {
-                                x: excessX / 2,
-                                y: excessY / 2
-                            };
-                        }
-
-                        // Zoom Slider
-                        imageSlider.addEventListener('input', (e) => {
-                            scale = parseFloat(e.target.value);
-                            // Re-clamp current position if we zoom out
-                            const limits = getLimits();
-                            pointX = clamp(pointX, -limits.x, limits.x);
-                            pointY = clamp(pointY, -limits.y, limits.y);
-                            updateTransform();
-                        });
-
-                        function updateTransform() {
-                            imagePreview.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
-                        }
-
-                        // Drag Events (Mouse)
-                        imageUploadFrame.addEventListener('mousedown', (e) => {
-                            e.preventDefault();
-                            startX = e.clientX - pointX;
-                            startY = e.clientY - pointY;
-                            isDragging = true;
-                        });
-
-                        window.addEventListener('mousemove', (e) => {
-                            if (!isDragging) return;
-                            e.preventDefault();
-
-                            let newX = e.clientX - startX;
-                            let newY = e.clientY - startY;
-
-                            const limits = getLimits();
-                            pointX = clamp(newX, -limits.x, limits.x);
-                            pointY = clamp(newY, -limits.y, limits.y);
-
-                            updateTransform();
-                        });
-
-                        window.addEventListener('mouseup', () => {
-                            isDragging = false;
-                        });
-
-                        // Drag Events (Touch)
-                        imageUploadFrame.addEventListener('touchstart', (e) => {
-                            if (e.touches.length === 1) {
-                                e.preventDefault();
-                                startX = e.touches[0].clientX - pointX;
-                                startY = e.touches[0].clientY - pointY;
-                                isDragging = true;
-                            }
-                        }, { passive: false });
-
-                        window.addEventListener('touchmove', (e) => {
-                            if (!isDragging) return;
-                            e.preventDefault();
-
-                            let newX = e.touches[0].clientX - startX;
-                            let newY = e.touches[0].clientY - startY;
-
-                            const limits = getLimits();
-                            pointX = clamp(newX, -limits.x, limits.x);
-                            pointY = clamp(newY, -limits.y, limits.y);
-
-                            updateTransform();
-                        }, { passive: false });
-
-                        window.addEventListener('touchend', () => {
-                            isDragging = false;
-                        });
-
-                        // Reset function
-                        window.resetImageTransform = function () {
-                            if (imagePreview.src) {
-                                scale = 1;
-                                pointX = 0;
-                                pointY = 0;
-                                imageSlider.value = 1;
-                                updateTransform();
-                            }
-                        }
-
-                        imageSlider.setAttribute('data-listener-attached', 'true');
                     }
 
-                    // Reset if function exists
-                    if (window.resetImageTransform) {
-                        // window.resetImageTransform();
-                    }
+                    imageSlider.setAttribute('data-listener-attached', 'true');
                 }
-            });
-        }
-    }
+
+                // Reset if function exists
+                if (window.resetImageTransform) {
+                    // window.resetImageTransform();
+                }
+            }
+        });
+    };
 });
 
