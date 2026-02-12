@@ -483,28 +483,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Calculate setup when image loads
                         imagePreview.onload = function () {
-                            const imgRatio = imagePreview.naturalWidth / imagePreview.naturalHeight;
-                            const frameRatio = FRAME_WIDTH / FRAME_HEIGHT;
+                            const imgWidth = imagePreview.naturalWidth;
+                            const imgHeight = imagePreview.naturalHeight;
 
-                            // Reset transform
-                            scale = 1;
+                            // 1. Calculate Scale to CONTAIN image within frame
+                            // We want the image to be fully visible by default.
+                            const scaleX = FRAME_WIDTH / imgWidth;
+                            const scaleY = FRAME_HEIGHT / imgHeight;
+                            const scaleContain = Math.min(scaleX, scaleY);
+
+                            // 2. Calculate Scale to COVER frame (for max zoom consideration)
+                            const scaleCover = Math.max(scaleX, scaleY);
+
+                            // Apply Contain Scale
+                            baseWidth = imgWidth * scaleContain;
+                            baseHeight = imgHeight * scaleContain;
+
+                            imagePreview.style.width = `${baseWidth}px`;
+                            imagePreview.style.height = `${baseHeight}px`;
+
+                            // 3. Reset State
+                            scale = 1; // Current scale relative to base dimensions
                             pointX = 0;
                             pointY = 0;
                             imageSlider.value = 1;
 
-                            if (imgRatio > frameRatio) {
-                                // Image is wider than frame -> Height = frame height + buffer
-                                baseHeight = FRAME_HEIGHT + BUFFER;
-                                baseWidth = baseHeight * imgRatio;
-                                imagePreview.style.width = `${baseWidth}px`;
-                                imagePreview.style.height = `${baseHeight}px`;
-                            } else {
-                                // Image is taller than frame -> Width = frame width + buffer
-                                baseWidth = FRAME_WIDTH + BUFFER;
-                                baseHeight = baseWidth / imgRatio;
-                                imagePreview.style.width = `${baseWidth}px`;
-                                imagePreview.style.height = `${baseHeight}px`;
-                            }
+                            // 4. Set Slider Max to allow zooming up to Cover + extra
+                            // If we are at Contain (1x), we need to reach Cover.
+                            // relativeCoverScale = scaleCover / scaleContain
+                            // We give a bit more room (e.g. 1.5x cover or just fixed max)
+                            // Let's make max dynamic or fixed large enough. 
+                            // If Image is huge, scaleContain is small. 
+                            // If Image is small, scaleContain is large. 
+                            // The base dimensions are set to FIT the frame.
+                            // So baseWidth <= FRAME_WIDTH and baseHeight <= FRAME_HEIGHT.
+                            // To Cover, we need to scale up.
+
+                            const relativeCover = scaleCover / scaleContain;
+                            // Set max to at least relativeCover * 1.5 to allow freedom
+                            const newMax = Math.max(3, relativeCover * 1.5);
+                            imageSlider.max = newMax;
+
                             updateTransform();
                         };
 
@@ -518,10 +537,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             const currentHeight = baseHeight * scale;
 
                             // Calculate excess dimension
+                            // If content is smaller than frame, excess is 0.
                             const excessX = Math.max(0, currentWidth - FRAME_WIDTH);
                             const excessY = Math.max(0, currentHeight - FRAME_HEIGHT);
 
-                            // You can pan half the excess in each direction
                             return {
                                 x: excessX / 2,
                                 y: excessY / 2
@@ -533,6 +552,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             scale = parseFloat(e.target.value);
                             // Re-clamp current position if we zoom out
                             const limits = getLimits();
+
+                            // If zoomed out where image is smaller than frame, pointX/Y should be 0 (center)
+                            // The clamping handles this because limits will be 0, so clamps to 0.
                             pointX = clamp(pointX, -limits.x, limits.x);
                             pointY = clamp(pointY, -limits.y, limits.y);
                             updateTransform();
@@ -548,6 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             startX = e.clientX - pointX;
                             startY = e.clientY - pointY;
                             isDragging = true;
+                            imageUploadFrame.style.cursor = 'grabbing';
                         });
 
                         window.addEventListener('mousemove', (e) => {
@@ -566,6 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         window.addEventListener('mouseup', () => {
                             isDragging = false;
+                            imageUploadFrame.style.cursor = 'grab';
                         });
 
                         // Drag Events (Touch)
