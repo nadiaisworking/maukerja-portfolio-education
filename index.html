@@ -90,28 +90,32 @@
                 <p class="cta-subtitle">Hanya perlu hantar 1 file & korang berpeluang menang RM30x5!</p>
 
                 <div class="folder-grid">
-                    <button type="button" class="mac-folder folder-blue" onclick="triggerUpload('Imej')">
+                    <button type="button" class="mac-folder folder-blue"
+                        onclick="window.location.href='https://epca.in/Ow7rQ'">
                         <div class="folder-tab"></div>
                         <div class="folder-body">
                             <span class="folder-emoji">🖼️</span>
                             <span class="folder-text">Imej</span>
                         </div>
                     </button>
-                    <button type="button" class="mac-folder folder-red" onclick="triggerUpload('Video')">
+                    <button type="button" class="mac-folder folder-red"
+                        onclick="window.location.href='https://epca.in/Ow7y7'">
                         <div class="folder-tab"></div>
                         <div class="folder-body">
                             <span class="folder-emoji">🎬</span>
                             <span class="folder-text">Video</span>
                         </div>
                     </button>
-                    <button type="button" class="mac-folder folder-green" onclick="triggerUpload('Projek')">
+                    <button type="button" class="mac-folder folder-green"
+                        onclick="window.location.href='https://epca.in/jw7u4'">
                         <div class="folder-tab"></div>
                         <div class="folder-body">
                             <span class="folder-emoji">🌐</span>
                             <span class="folder-text">Website</span>
                         </div>
                     </button>
-                    <button type="button" class="mac-folder folder-yellow" onclick="triggerUpload('Dokumen')">
+                    <button type="button" class="mac-folder folder-yellow"
+                        onclick="window.location.href='https://epca.in/ew7t2'">
                         <div class="folder-tab"></div>
                         <div class="folder-body">
                             <span class="folder-emoji">📄</span>
@@ -122,113 +126,8 @@
 
                 <p class="cta-instruction">Sila klik 1 file untuk dihantar</p>
 
-                <!-- Hidden/Simplified Form for Logic -->
-                <div id="submission-area"
-                    style="display: none; margin-top: 20px; width: 100%; max-width: 400px; background: rgba(255,255,255,0.9); padding: 20px; border-radius: 15px; border: 3px solid #ee3c4d;">
-                    <form id="portfolio-form">
-                        <input type="hidden" id="selected-category" name="category">
-                        <div class="form-group">
-                            <label>Fail Dipilih:</label>
-                            <div
-                                style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
-                                <div id="file-name-display"
-                                    style="font-weight: bold; color: #333; flex-grow: 1; word-break: break-all;">
-                                    Tiada file dipilih</div>
-                                <button type="button" id="change-file-btn"
-                                    style="display:none; background: #ddd; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-family: 'Nunito'; font-weight: bold; font-size: 0.8rem;">Tukar</button>
-                            </div>
-                            <input type="file" id="hidden-file-input" name="file" required style="display: none;">
-                        </div>
-
-                        <!-- Image Specific Fields (Hidden by default) -->
-                        <div id="image-specific-fields" style="display: none;">
-                            <div class="form-group" style="text-align: center;">
-                                <div class="image-upload-frame">
-                                    <img id="image-preview" src="" alt="Preview">
-                                </div>
-                                <div id="image-slider-container" style="display: none; margin-top: 10px;">
-                                    <label for="image-position-slider" style="font-size: 0.9rem;">Zoom</label>
-                                    <input type="range" id="image-position-slider" min="1" max="3" value="1" step="0.1"
-                                        style="width: 100%;">
-                                    <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">Drag gambar untuk adjust
-                                        posisi</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Tajuk Gambar</label>
-                                <input type="text" name="image_title" placeholder="Tajuk pendek gambar...">
-                            </div>
-                            <div class="form-group">
-                                <label>Keterangan Pendek</label>
-                                <textarea name="image_desc" rows="3"
-                                    placeholder="Ceritakan sedikit mengenai gambar ini..."></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Video Specific Fields (Hidden by default) -->
-                        <div id="video-specific-fields" style="display: none;">
-                            <div class="form-group" style="text-align: center;">
-                                <div id="video-preview-container"
-                                    style="display: none; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; margin-bottom: 10px; border: 2px solid #ddd; overflow: hidden;">
-                                    <iframe id="video-preview-frame" width="100%" height="100%" src="" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen></iframe>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Link Youtube</label>
-                                <input type="url" name="youtube_link" id="youtube-link-input"
-                                    placeholder="https://www.youtube.com/watch?v=...">
-                            </div>
-                            <div class="form-group">
-                                <label>Tajuk Video</label>
-                                <input type="text" name="video_title" placeholder="Tajuk video anda...">
-                            </div>
-                            <div class="form-group">
-                                <label>Keterangan Pendek</label>
-                                <textarea name="video_desc" rows="3"
-                                    placeholder="Ceritakan sedikit mengenai video ini..."></textarea>
-                            </div>
-                        </div>
 
 
-
-                        <!-- Website Specific Fields (Hidden by default) -->
-                        <div id="website-specific-fields" style="display: none;">
-                            <div class="form-group">
-                                <label>Link Website</label>
-                                <input type="url" name="website_link" placeholder="https://www.example.com">
-                            </div>
-                            <div class="form-group">
-                                <label>Tajuk Website / Projek</label>
-                                <input type="text" name="website_title" placeholder="Nama website atau projek...">
-                            </div>
-                            <div class="form-group">
-                                <label>Keterangan Pendek</label>
-                                <textarea name="website_desc" rows="3"
-                                    placeholder="Ceritakan sedikit mengenai website ini..."></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Document Specific Fields (Hidden by default) -->
-                        <div id="document-specific-fields" style="display: none;">
-                            <div class="form-group">
-                                <label>Tajuk Dokumen</label>
-                                <input type="text" name="doc_title"
-                                    placeholder="Tajuk dokumen (e.g. Resume, Report)...">
-                            </div>
-                            <div class="form-group">
-                                <label>Keterangan Pendek</label>
-                                <textarea name="doc_desc" rows="3"
-                                    placeholder="Ceritakan sedikit mengenai dokumen ini..."></textarea>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="submit-button">Hantar Penyertaan</button>
-
-
-                    </form>
-                </div>
             </div>
         </section>
     </main>
