@@ -1,200 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Angpao Maukerja - Huat Ah!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Outfit:wght@400;500;700;900&display=swap"
+    <title>Ini Portfolio Ke Bukan?</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@400;700;900&display=swap"
         rel="stylesheet">
+    <!-- Consolidated Styles -->
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-    <!-- Background Layers -->
-    <div class="background-layers"></div>
-    <div class="sunburst"></div>
+    <!-- STATIC BACKGROUND -->
+    <div class="fixed-background"></div>
 
-    <!-- Floating Elements -->
-    <div id="coins-container" class="floating-coins"></div>
+    <main>
+        <!-- VIEW 1: GAME PAGE -->
+        <section id="game-view" class="full-screen-view active">
+            <header class="game-header-banner">
+                <div class="banner-ribbon">
+                    <h1>Ini Portfolio Ke Bukan?</h1>
+                </div>
+                <div class="banner-sub">Drag file dalam folder Portfolio!</div>
+            </header>
 
-    <div class="lantern left-lantern"></div>
-    <div class="lantern right-lantern"></div>
+            <div id="bubbles-container" class="bubbles-row">
+                <!-- Bubbles injected by JS in a ROW -->
+            </div>
 
-    <div class="cny-corner corner-left"></div>
-    <div class="cny-corner corner-right"></div>
+            <!-- FOLDER WITH POCKET -->
+            <div class="folder-area" id="drop-zone">
+                <div class="folder-back">
+                    <div class="folder-title">Portfolio</div>
+                    <div id="pocket-content" class="folder-pocket-content">
+                        <!-- Dropped icons appear here -->
+                    </div>
+                </div>
+                <div class="folder-front"></div>
+            </div>
+        </section>
 
-    <div class="knot left-knot"></div>
-    <div class="knot right-knot"></div>
+        <!-- VIEW 2: EDUCATIONAL CONTENT -->
+        <section id="content-view" class="full-screen-view">
+            <div class="content-container">
+                <h2 class="content-title">Semua Benda Boleh Jadi Portfolio!</h2>
 
-    <div class="blossom b1"></div>
-    <div class="blossom b2"></div>
-    <div class="blossom b3"></div>
+                <div class="educational-text">
+                    <p>
+                        Portfolio tak semestinya kena cantik atau perfect.<br>
+                        Apa sahaja yang korang pernah buat dan boleh buktikan usaha & hasil kerja,<br>
+                        korang boleh guna tu dalam portfolio!
+                    </p>
+                </div>
 
-    <div class="big-coin c1"></div>
-    <div class="big-coin c2"></div>
-
-    <div class="golden-hill"></div>
-
-    <div class="logo-container">
-        <!-- Optional Logo if needed, but styling seems to imply it might be elsewhere or hidden -->
-        <!-- <img src="assets/logo.png" class="logo" alt="Maukerja Logo"> -->
-    </div>
-
-    <!-- Main Container -->
-    <div class="container">
-
-        <!-- Header -->
-        <div class="header">
-            <img src="assets/logo.png" class="header-logo-top" alt="Maukerja Logo">
-            <h1 class="huat-text">
-                ANGPAO <span class="highlight">MAUKERJA!</span>
-            </h1>
-            <div class="intro-text">Menang Besar RM50 Hari Ini!</div>
-        </div>
-
-        <!-- Game Area -->
-        <div class="game-area-split">
-
-            <!-- Left Panel: Wheel -->
-            <div class="left-panel">
-                <div class="wheel-container-stacked">
-                    <!-- Assets Stack -->
-                    <img src="assets/coins.png" class="asset-stack coins-stack" alt="Coins">
-                    <img src="assets/mascot.png" class="asset-stack mascot-stack" alt="Mascot">
-
-                    <div class="wheel-outer">
-                        <div id="wheel" class="wheel">
-                            <!-- JS will populate segments -->
-                        </div>
+                <div class="portfolio-types-grid">
+                    <div class="type-card">
+                        <div class="type-icon">📸</div>
+                        <h3 class="type-title">Gambar</h3>
+                        <p class="type-desc">Poster, design & fotografi</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🎥</div>
+                        <h3 class="type-title">Video</h3>
+                        <p class="type-desc">Content, presentation & demo kerja</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🌐</div>
+                        <h3 class="type-title">Website</h3>
+                        <p class="type-desc">Blog, landing page, sistem & portfolio site</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">📄</div>
+                        <h3 class="type-title">Dokumen</h3>
+                        <p class="type-desc">Laporan, slide, proposal & assignment</p>
                     </div>
                 </div>
 
-                <div class="prizes-row">
-                    <div class="prize-pill">3x Pemenang</div>
-                    <div class="prize-pill gold">RM50 TNG</div>
+                <button class="cta-button" id="cta-hadiah">💰 Nak Menang Hadiah 💰</button>
+            </div>
+        </section>
+
+        <!-- VIEW 3: FORM SUBMISSION -->
+        <section id="form-view" class="full-screen-view">
+            <div class="upload-cta-container">
+                <h2 class="cta-title">Jom Upload Hasil Kerja Korang!</h2>
+                <p class="cta-subtitle">Hanya perlu hantar 1 file & korang berpeluang menang RM30x5!</p>
+
+                <div class="folder-grid">
+                    <button type="button" class="mac-folder folder-blue"
+                        onclick="window.location.href='https://www.maukerja.my/profile/portfolios?type=images&utm_source=profileimage&utm_medium=landingpage&utm_campaign=Nadia'">
+                        <div class="folder-tab"></div>
+                        <div class="folder-body">
+                            <span class="folder-emoji">🖼️</span>
+                            <span class="folder-text">Imej</span>
+                        </div>
+                    </button>
+                    <button type="button" class="mac-folder folder-red"
+                        onclick="window.location.href='https://www.maukerja.my/profile/portfolios?type=videos&utm_source=profilevideo&utm_medium=landingpage&utm_campaign=Nadia'">
+                        <div class="folder-tab"></div>
+                        <div class="folder-body">
+                            <span class="folder-emoji">🎬</span>
+                            <span class="folder-text">Video</span>
+                        </div>
+                    </button>
+                    <button type="button" class="mac-folder folder-green"
+                        onclick="window.location.href='https://www.maukerja.my/profile/portfolios?type=websites&utm_source=profilewebsite&utm_medium=landingpage&utm_campaign=Nadia'">
+                        <div class="folder-tab"></div>
+                        <div class="folder-body">
+                            <span class="folder-emoji">🌐</span>
+                            <span class="folder-text">Website</span>
+                        </div>
+                    </button>
+                    <button type="button" class="mac-folder folder-yellow"
+                        onclick="window.location.href='https://www.maukerja.my/profile/portfolios?type=documents&utm_source=profiledocument&utm_medium=landingpage&utm_campaign=Nadia'">
+                        <div class="folder-tab"></div>
+                        <div class="folder-body">
+                            <span class="folder-emoji">📄</span>
+                            <span class="folder-text">Dokumen</span>
+                        </div>
+                    </button>
                 </div>
+
+                <p class="cta-instruction">Sila klik 1 file untuk dihantar</p>
+
+
+
             </div>
+        </section>
+    </main>
 
-            <!-- Right Panel: Entry Form -->
-            <div class="right-panel">
-                <div class="huat-form-card">
-                    <img src="assets/tng.png" class="tng-card-decoration" alt="TNG">
-                    <h2 class="form-title">Pilih Entri Anda!</h2>
-
-                    <div class="ticket-container">
-                        <!-- Ticket 1 -->
-                        <div class="ticket">
-                            <div class="ticket-main">
-                                <span class="ticket-title">1 Entri</span>
-                                <span class="ticket-desc">Email Sahaja</span>
-                            </div>
-                            <div class="ticket-perforation-line"></div>
-                            <div class="ticket-stub">
-                                <button id="btn-entry-1" class="ticket-action-btn">
-                                    Pilih
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Ticket 2 -->
-                        <div class="ticket">
-                            <div class="ticket-main">
-                                <span class="ticket-title">2 Entri</span>
-                                <span class="ticket-desc">Guna Email Maukerja</span>
-                            </div>
-                            <div class="ticket-perforation-line"></div>
-                            <div class="ticket-stub">
-                                <button id="btn-entry-2" class="ticket-action-btn">
-                                    Pilih
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Ticket 3 (Premium) -->
-                        <div class="ticket ticket-premium">
-                            <div class="ticket-main">
-                                <span class="ticket-title">3 Entri</span>
-                                <span class="ticket-desc">Daftar & Dapat 3X</span>
-                            </div>
-                            <div class="ticket-perforation-line"></div>
-                            <div class="ticket-stub">
-                                <button id="btn-entry-3" class="ticket-action-btn btn-gold">
-                                    Pilih
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+    <div class="footer-logo-container">
+        <img src="logo.png" alt="Maukerja" class="footer-logo">
     </div>
 
-    <!-- Modals -->
+    <script src="main.js"></script>
 
-    <!-- Email Modal (Entry 1) -->
-    <div id="email-modal" class="modal-overlay">
-        <div class="modal-card">
-            <button class="close-btn">&times;</button>
-            <h2 class="form-title">Masukkan Email</h2>
-            <form id="email-form">
-                <input type="email" id="user-email" placeholder="example@gmail.com" required
-                    style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ccc;">
-                <button type="submit" class="big-red-btn" style="width: 100%">Hantar</button>
-            </form>
+    <!-- WHATSAPP MODAL -->
+    <div id="whatsapp-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">Terima Kasih!</h2>
+            <p class="modal-text">Penyertaan anda telah direkodkan.</p>
+            <p class="modal-subtext">Join channel Whatsapp kami untuk pengumuman pemenang & info kempen!</p>
+
+            <a href="https://whatsapp.com/channel/0029VaydHNyCxoB1oPekql1n" target="_blank" class="whatsapp-btn"
+                id="join-whatsapp-btn">
+                📱 Join Channel Whatsapp
+            </a>
+
+            <button class="close-modal-btn" id="close-modal-btn">Tutup</button>
         </div>
     </div>
-
-    <!-- Login Modal (Entry 2) -->
-    <div id="entry2-modal" class="modal-overlay">
-        <div class="modal-card">
-            <button class="close-btn">&times;</button>
-            <h2 class="form-title">Login Maukerja</h2>
-            <img src="assets/profile-example.png" alt="Profile Example" class="modal-instruction-img">
-            <p>Sila masukkan email akaun Maukerja anda.</p>
-            <form id="login-form">
-                <input type="email" id="login-email" placeholder="example@gmail.com" required
-                    style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ccc;">
-                <button type="submit" class="big-red-btn" style="width: 100%">Hantar</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Entry 3 Modal -->
-    <div id="entry3-modal" class="modal-overlay">
-        <div class="modal-card">
-            <button class="close-btn">&times;</button>
-            <h2 class="form-title">Daftar Maukerja</h2>
-            <img src="assets/register-example.png" alt="Register Example" class="modal-instruction-img">
-            <p>Daftar sekarang dan anda akan dapat <br><strong style="color: #d1121d; font-size: 1.2rem;">3
-                    Entri</strong> secara automatik!</p>
-            <button class="big-red-btn"
-                onclick="window.location.href='https://www.maukerja.my/profile?utm_source=mkprofile&utm_medium=landingpage&utm_campaign=Nadia'">Daftar
-                Sekarang</button>
-        </div>
-    </div>
-
-    <!-- Thank You Modal -->
-    <div id="thank-you-modal" class="modal-overlay">
-        <div class="modal-card">
-            <button class="close-btn">&times;</button>
-            <h2 class="form-title" style="color: #28a745;">Berjaya!</h2>
-            <p>Terima kasih. Semoga berjaya!</p>
-            <div style="margin-top: 20px;">
-                <p style="font-weight: bold; margin-bottom: 10px;">Join WhatsApp Kami untuk Pemenang:</p>
-                <a href="https://www.whatsapp.com/channel/0029VaydHNyCxoB1oPekql1n" target="_blank" class="select-btn"
-                    style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; background: #25D366;"><i
-                        class="fab fa-whatsapp" style="font-size: 1.2em;"></i> Join WhatsApp</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Script -->
-    <script src="main_v2.js"></script>
 </body>
 
 </html>
